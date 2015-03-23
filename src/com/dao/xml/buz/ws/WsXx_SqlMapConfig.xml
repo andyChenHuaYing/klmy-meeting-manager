@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="wsxx">
+	
+	<select id="queryWsxx" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select t1.*,
+      t2.XH ybjzqk_xh,
+      t2.YYMC,
+      t2.BZ,
+      to_char(t2.JZSJ,'yyyy-MM-dd hh24:mm:ss') JZSJ,
+      t2.JZFY,
+      t2.BXJE,
+      t3.XH jkqk_xh,
+      t3.SG,
+      t3.TZ,
+      t3.XX,
+      t3.TLQK,
+      t3.SLQK,
+      t3.BS,
+      t3.CRB,
+      t3.ZZCD,
+      t3.GMS,
+      t3.GMY,
+      t3.CFYW,
+      t3.STQK,
+      t3.JSZT
+      from ry_jbxx t1,
+           ws_ybjzqk t2,
+           ws_jkqk t3
+           
+      where t1.rybh = t2.rybh(+)
+            and t1.rybh = t3.rybh(+)
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="xx">
+			and XX = #xx#
+		</isNotEmpty>
+		<isNotEmpty property="jzsj">
+			and to_char(JZSJ,'yyyy-MM-dd')  = #jzsj#
+		</isNotEmpty>
+		<isNotEmpty property="stqk">
+			and STQK  = #stqk#
+		</isNotEmpty>
+		<isNotEmpty property="gmy">
+			and GMY = #gmy#
+		</isNotEmpty>
+		<isNotEmpty property="yymc">
+			and YYMC = #yymc#
+		</isNotEmpty>
+		<isNotEmpty property="bz">
+			and bz = #bz#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryWsxxCnt" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+		select count(1) cnt
+      from ry_jbxx t1,
+           ws_ybjzqk t2,
+           ws_jkqk t3
+           
+      where t1.rybh = t2.rybh(+)
+            and t1.rybh = t3.rybh(+)
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="xx">
+			and XX = #xx#
+		</isNotEmpty>
+		<isNotEmpty property="jzsj">
+			and to_char(JZSJ,'yyyy-MM-dd')  = #jzsj#
+		</isNotEmpty>
+		<isNotEmpty property="stqk">
+			and STQK  = #stqk#
+		</isNotEmpty>
+		<isNotEmpty property="gmy">
+			and GMY = #gmy#
+		</isNotEmpty>
+		<isNotEmpty property="yymc">
+			and YYMC = #yymc#
+		</isNotEmpty>
+		<isNotEmpty property="bz">
+			and bz = #bz#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+</sqlMap>

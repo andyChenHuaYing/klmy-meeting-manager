@@ -1,0 +1,47 @@
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	
+	<!-- Configure a built-in transaction manager. If you're using an app server, 
+		you probably want to use its transaction manager and a managed datasource -->
+	<settings useStatementNamespaces="true" errorTracingEnabled="true"/>
+        <sqlMap resource="com/dao/xml/Role_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/User_SqlMapConfig.xml" />
+        <sqlMap resource="com/dao/xml/Menu_SqlMapConfig.xml" />
+        <sqlMap resource="com/dao/xml/Unit_SqlMapConfig.xml" />
+        <sqlMap resource="com/dao/xml/Person_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/Log_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/Company_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/Department_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/RoleResource_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/table/TConfigTableHeader_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/table/TConfigTable_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/RyJbxx_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/ga/GaXx_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/selection/Nation_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/selection/Normal_Area_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/selection/Group_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/selection/Level_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/selection/Classification_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/mz/MzXx_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/js/JsXx_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/rs/RsXx_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/ws/WsXx_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/cl/ClXx_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/buz/gjj/GjjXx_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/Area_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Rkbl_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Nnbl_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Cbrybl_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Sbyxnh_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Hyzktj_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Jhnldfb_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Ylfndqfb_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Chryfqtj_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/statisticalform/Chrybl_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/Dictionary_SqlMapConfig.xml"/>
+        <sqlMap resource="com/dao/xml/Rolegrp_SqlMapConfig.xml"/>
+</sqlMapConfig>

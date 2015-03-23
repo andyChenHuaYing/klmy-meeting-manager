@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="jsxx">
+	
+	<select id="queryJsxx" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select t1.*,
+			t2.XH,
+			to_char(t2.HYRQ,'yyyy-MM-dd hh24:mm:ss') HYRQ,
+			to_char(t2.XKJKRQ,'yyyy-MM-dd hh24:mm:ss') XKJKRQ,
+			t2.XKJKDW,
+			to_char(t2.DKJKRQ,'yyyy-MM-dd hh24:mm:ss') DKJKRQ,
+			t2.DKJKDW,
+			t2.YQJKJCQK,
+			to_char(t2.SYSJ,'yyyy-MM-dd hh24:mm:ss') SYSJ,
+			t2.CSQK,
+			to_char(t2.BYJYRQ,'yyyy-MM-dd hh24:mm:ss') BYJYRQ,
+			t2.BYJYDW,
+			t2.BYJYCS,
+			t3.XH,
+			t3.XM,
+			t3.XB,
+			t3.CSZMH,
+			to_char(t3.CSNY,'yyyy-MM-dd hh24:mm:ss') CSNY,
+			t3.SFZHM,
+			t3.SFFHZCSY,
+			t3.WFSYCFQK,
+			t3.SYLX
+			from ry_jbxx t1,
+			     js_ylxx t2,
+			     js_znxx t3
+			where t1.rybh = t2.rybh(+)
+			      and t1.rybh = t3.rybh(+)
+       
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="hyrq">
+			and to_char(HYRQ,'yyyy-MM-dd')  = #hyrq#
+		</isNotEmpty>
+		<isNotEmpty property="sysj">
+			and to_char(SYSJ,'yyyy-MM-dd')  = #sysj#
+		</isNotEmpty>
+		<isNotEmpty property="byjyrq">
+			and to_char(BYJYRQ,'yyyy-MM-dd') = #byjyrq#
+		</isNotEmpty>
+		<isNotEmpty property="cszmh">
+			and CSZMH = #cszmh#
+		</isNotEmpty>
+		<isNotEmpty property="sylx">
+			and SYLX = #sylx#
+		</isNotEmpty>
+		<isNotEmpty property="sffhzcsy">
+			and SFFHZCSY = #sffhzcsy#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryJsxxCnt" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+		select count(1) cnt
+			from ry_jbxx t1,
+			     js_ylxx t2,
+			     js_znxx t3
+			where t1.rybh = t2.rybh(+)
+			      and t1.rybh = t3.rybh(+)
+       
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="hyrq">
+			and to_char(HYRQ,'yyyy-MM-dd')  = #hyrq#
+		</isNotEmpty>
+		<isNotEmpty property="sysj">
+			and to_char(SYSJ,'yyyy-MM-dd')  = #sysj#
+		</isNotEmpty>
+		<isNotEmpty property="byjyrq">
+			and to_char(BYJYRQ,'yyyy-MM-dd') = #byjyrq#
+		</isNotEmpty>
+		<isNotEmpty property="cszmh">
+			and CSZMH = #cszmh#
+		</isNotEmpty>
+		<isNotEmpty property="sylx">
+			and SYLX = #sylx#
+		</isNotEmpty>
+		<isNotEmpty property="sffhzcsy">
+			and SFFHZCSY = #sffhzcsy#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+</sqlMap>

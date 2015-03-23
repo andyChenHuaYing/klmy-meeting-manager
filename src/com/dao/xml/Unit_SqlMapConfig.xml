@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="unit">	
+	<typeAlias alias="unitModel" type="com.vo.UnitVO"/>
+	<resultMap class="unitModel" id="unitMap">
+		<result property="unitId" column="unit_id"/>
+		<result property="name" column="name"/>
+		<result property="desc" column="desc"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="remark" column="remark"/>
+		<result property="version" column="version"/>
+	
+	</resultMap>
+	<select id="queryUnit" parameterClass="java.util.HashMap" resultMap="unitMap">
+		select unit_id,name,
+		"desc",create_user_id,
+		create_date,
+		modify_user_id,
+		modify_date,remark,version
+		from tb_base_unit
+		where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			unit_id = #unitId#
+		</isNotEmpty>
+		<isNotEmpty property="name" prepend="and">
+			name = #name#
+		</isNotEmpty>
+		<isNotEmpty property="desc" prepend="and">
+			"desc" = #desc#
+		</isNotEmpty>		
+	</select>
+	
+	<select id="queryUnitForMap" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select unit_id,name,
+		"desc",
+		create_user_id,
+		to_char(create_date,'YYYY-MM-DD hh:mm:ss') create_date,
+		modify_user_id,
+		to_char(modify_date,'YYYY-MM-DD hh:mm:ss') modify_date,remark,version
+		from tb_base_unit
+		where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			unit_id = #unitId#
+		</isNotEmpty>
+		<isNotEmpty property="name" prepend="and">
+			name = #name#
+		</isNotEmpty>
+		<isNotEmpty property="desc" prepend="and">
+			"desc" = #desc#
+		</isNotEmpty>		
+		<isNotEmpty property="roleId" prepend="and">
+			unit_id in (select o.unit_id from tb_base_role_unit o where o.role_id = #roleId#)
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryUnitByUser" parameterClass="java.util.HashMap" resultMap="unitMap">
+		select t1.unit_id,t1.name,
+			    t1."desc",t1.create_user_id,
+			    t1.create_date,
+			    t1.modify_user_id,
+			    t1.modify_date,t1.remark,t1.version
+		from tb_base_unit t1,tb_base_role_unit t2, tb_base_role t3,tb_base_user_role t4
+		where t1.unit_id = t2.unit_id
+			  and t2.role_id = t3.role_id
+			  and t3.role_id = t4.role_id
+		<isNotEmpty property="userId">
+			and t4.user_id = #userId#
+		</isNotEmpty>
+		<isEmpty property="userId">
+			and 1=2
+		</isEmpty>	
+	</select>
+	<insert id="addRoleUnit" parameterClass="java.util.HashMap">
+		insert into tb_base_role_unit(id,role_id,unit_id,create_user_id,create_date,remark)
+		values (seq_tb_base_role_unit_id.nextval,#roleId#,#unitId#,#createUserId#,sysdate,#remark#)
+	</insert>
+	
+	<insert id="insertRoleUnit" parameterClass="java.util.HashMap">
+		insert into tb_base_role_unit(id,role_id,unit_id,create_user_id,create_date)
+		values(seq_tb_base_role_unit_id.nextval,#roleId#,#unitId#,#createUserId#,sysdate)
+		<selectKey resultClass="long" keyProperty="id">
+			select max(id) from tb_base_role_unit
+		</selectKey>
+	</insert>
+	<delete id="deleteRoleUnit" parameterClass="java.util.HashMap">
+		delete from tb_base_role_unit where 1=1
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+		<isNotEmpty property="unitId">
+			and unit_id = #unitId#
+		</isNotEmpty>
+	</delete>	
+</sqlMap>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="gaxx">
+	
+	<select id="queryGaRyJbxx" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select t1.*,t2.XH ga_qrqcxx_xh,
+		to_char(t2.BDSJ,'yyyy-MM-dd hh24:mm:ss') BDSJ,
+		t2.BDYY,t2.QRDZ,t2.QCDZ,t2.BDLX,
+		t3.XH ga_byxx_xh,t3.BYQK,t3.FYBD,
+		to_char(t3.RWSJ,'yyyy-MM-dd hh24:mm:ss') RWSJ,
+		to_char(t3.TWSJ,'yyyy-MM-dd hh24:mm:ss') TWSJ,				
+		t4.XH ga_zzxx_xh,t4.ZZMM,
+		to_char(t4.JRSJ,'yyyy-MM-dd hh24:mm:ss') JRSJ,
+		to_char(t4.TCSJ,'yyyy-MM-dd hh24:mm:ss') TCSJ,
+		t5.XH ga_swxx_xh,t5.SWYYZM,t5.SWLX,t5.SWYY,t5.SWPCSZM,
+		to_char(t5.SWRQ,'yyyy-MM-dd hh24:mm:ss') SWRQ,
+		t5.AZDD,
+		to_char(t5.HHSJ,'yyyy-MM-dd hh24:mm:ss') HHSJ,
+		t6.XH ga_zanzxx_xh,t6.ZZZBH,
+		to_char(t6.BLSJ,'yyyy-MM-dd hh24:mm:ss') BLSJ,
+		t6.LNYY,t6.ZZDZ,
+		t7.XH ga_hjxx_xh,t7.HJLX,t7.JG,t7.HJD,t7.SZHBH,t7.SFYZ,
+		t8.XH ga_lxfs_xh,t8.DH,t8.QQ,t8.EMAIL,
+		t9.XH ga_jhr_xh,t9.JHRSFZH,t9.JHRXM,t9.YJHRGX,
+		t10.XH ga_jzxx_xh,t10.JZLX,t10.JZD,
+		to_char(t10.RZSJ,'yyyy-MM-dd hh24:mm:ss') RZSJ,
+		t10.SJLY,
+		to_char(t10.SJDRSJ,'yyyy-MM-dd hh24:mm:ss') SJDRSJ
+		 from 
+		ry_jbxx t1,
+		ga_qrqcxx t2,
+		ga_byxx t3,
+		ga_zzxx t4,
+		ga_swxx t5,
+		ga_zanzxx t6,
+		ga_hjxx t7,
+		ga_lxfs t8,
+		ga_jhr t9,
+		ga_jzxx t10
+
+		where t1.rybh = t2.rybh(+)
+		      and t1.rybh = t3.rybh(+)
+		      and t1.rybh = t4.rybh(+)
+		      and t1.rybh = t5.rybh(+)
+		       and t1.rybh = t6.rybh(+)
+		       and t1.rybh = t7.rybh(+)
+		       and t1.rybh = t8.rybh(+)
+		       and t1.rybh = t9.rybh(+)
+		       and t1.rybh = t10.rybh(+)
+       
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxb">
+			and SFZXB = #sfzxb#
+		</isNotEmpty>
+		<isNotEmpty property="hjlx">
+			and HJLX = #hjlx#
+		</isNotEmpty>
+		<isNotEmpty property="byqk">
+			and BYQK = #byqk#
+		</isNotEmpty>
+		<isNotEmpty property="dh">
+			and DH = #dh#
+		</isNotEmpty>
+		<isNotEmpty property="zzmm">
+			and ZZMM = #zzmm#
+		</isNotEmpty>
+		<isNotEmpty property="swlx">
+			and SWLX = #swlx#
+		</isNotEmpty>
+		<isNotEmpty property="zzzbh">
+			and ZZZBH = #zzzbh#
+		</isNotEmpty>
+		<isNotEmpty property="qrsj">
+			and QRSJ = #qrsj#
+		</isNotEmpty>
+		<isNotEmpty property="qcsj">
+			and QCSJ = #qcsj#
+		</isNotEmpty>
+		
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+		
+	</select>
+	
+	<select id="queryGaRyJbxxCnt" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+		select count(1) cnt 
+		 from 
+		ry_jbxx t1,
+		ga_qrqcxx t2,
+		ga_byxx t3,
+		ga_zzxx t4,
+		ga_swxx t5,
+		ga_zanzxx t6,
+		ga_hjxx t7,
+		ga_lxfs t8,
+		ga_jhr t9,
+		ga_jzxx t10
+
+		where t1.rybh = t2.rybh(+)
+		      and t1.rybh = t3.rybh(+)
+		      and t1.rybh = t4.rybh(+)
+		      and t1.rybh = t5.rybh(+)
+		       and t1.rybh = t6.rybh(+)
+		       and t1.rybh = t7.rybh(+)
+		       and t1.rybh = t8.rybh(+)
+		       and t1.rybh = t9.rybh(+)
+		       and t1.rybh = t10.rybh(+)
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxb">
+			and SFZXB = #sfzxb#
+		</isNotEmpty>
+		<isNotEmpty property="hjlx">
+			and HJLX = #hjlx#
+		</isNotEmpty>
+		<isNotEmpty property="byqk">
+			and BYQK = #byqk#
+		</isNotEmpty>
+		<isNotEmpty property="dh">
+			and DH = #dh#
+		</isNotEmpty>
+		<isNotEmpty property="zzmm">
+			and ZZMM = #zzmm#
+		</isNotEmpty>
+		<isNotEmpty property="swlx">
+			and SWLX = #swlx#
+		</isNotEmpty>
+		<isNotEmpty property="zzzbh">
+			and ZZZBH = #zzzbh#
+		</isNotEmpty>
+		<isNotEmpty property="qrsj">
+			and QRSJ = #qrsj#
+		</isNotEmpty>
+		<isNotEmpty property="qcsj">
+			and QCSJ = #qcsj#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+		
+	</select>
+</sqlMap>

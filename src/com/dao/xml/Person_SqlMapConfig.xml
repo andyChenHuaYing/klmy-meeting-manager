@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="person">	
+	<typeAlias alias="personModel" type="com.vo.Person"/>
+	<resultMap class="personModel" id="personMap">
+		<result property="personId" column="person_id"/>
+		<result property="coId" column="co_id"/>
+		<result property="personCode" column="person_code"/>		
+		<result property="personName" column="person_name"/>
+		<result property="sex" column="sex"/>
+		<result property="birth" column="birth"/>
+		<result property="idCard" column="id_card"/>
+		<result property="medicareCard" column="medicare_card"/>
+		<result property="mobile" column="mobile"/>
+		<result property="tel" column="tel"/>
+		<result property="national" column="national"/>
+		<result property="education" column="education"/>
+		<result property="origin" column="origin"/>
+		<result property="ismarried" column="ismarried"/>
+		<result property="height" column="height"/>
+		<result property="address" column="address"/>		
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="remark" column="remark"/>
+		<result property="version" column="version"/>
+		<result property="departId" column="depart_id"/>
+		<result property="departName" column="depart_name"/>
+		<result property="medicalRecordNumber" column = "medical_record_number"/>
+	</resultMap>
+	<select id="queryPerson" parameterClass="java.util.HashMap" resultMap="personMap">
+		select person_id,co_id,person_code,
+		person_name,sex,birth,
+		id_card,medicare_card,
+		mobile,tel,education,
+		national,origin,ismarried,
+		height,address,create_user_id,
+		create_date,modify_user_id,modify_date,
+		remark,version,record_status,medical_record_number,depart_id,
+		(select d.name from tb_base_department d where d.depart_id= t.depart_id) depart_name
+		from tb_base_person t
+		where 1=1
+		<isNotEmpty property="personId" prepend="and">
+			person_id = #personId#
+		</isNotEmpty>
+		<isNotEmpty property="coId" prepend="and">
+			co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="personCode" prepend="and">
+			person_code = #personCode#
+		</isNotEmpty>	
+		
+		<isNotEmpty property="sex" prepend="and">
+			sex = #sex#
+		</isNotEmpty>
+		<isNotEmpty property="birth" prepend="and">
+			birth = #birth#
+		</isNotEmpty>
+		<isNotEmpty property="idCard" prepend="and">
+			id_card = #idCard#
+		</isNotEmpty>
+		<isNotEmpty property="mobile" prepend="and">
+			mobile = #mobile#
+		</isNotEmpty>
+		<isNotEmpty property="tel" prepend="and">
+			tel = #tel#
+		</isNotEmpty>
+		<isNotEmpty property="education" prepend="and">
+			education = #education#
+		</isNotEmpty>		
+		<isNotEmpty property="national" prepend="and">
+			national = #national#
+		</isNotEmpty>
+		<isNotEmpty property="origin" prepend="and">
+			origin = #origin#
+		</isNotEmpty>
+		<isNotEmpty property="ismarried" prepend="and">
+			ismarried = #ismarried#
+		</isNotEmpty>
+		<isNotEmpty property="height" prepend="and">
+			height = #height#
+		</isNotEmpty>
+		<isNotEmpty property="address" prepend="and">
+			address = #address#
+		</isNotEmpty>
+		<isNotEmpty property="medicalRecordNumber" prepend="and">
+			medical_record_number = #medicalRecordNumber#
+		</isNotEmpty>
+		<isNotEmpty property="userId" prepend="and">
+			person_id in (select person_id from tb_base_user where user_id = #userId#)
+		</isNotEmpty>
+	</select>
+	
+	<insert id="addPerson" parameterClass="java.util.HashMap">
+		insert into tb_base_person(person_id,co_id,person_code,person_name,sex,birth,id_card,medicare_card,
+		mobile,tel,education,national,origin,ismarried,height,address,create_user_id,
+		create_date,remark,medical_record_number,depart_id,job,income,contact,postcode,cause)
+		values (seq_tb_base_person_id.nextval,#coId#,#personCode#,#personName#,#sex#,to_date(#birth#,'YYYY-MM-DD'),#idCard#,#medicareCard#,
+		#mobile#,#tel#,#education#,#national#,#origin#,#ismarried#,#height#,#address#,#userId#,sysdate,#remark#,#medicalRecordNumber#,#departId#,
+		#job#,#income#,#contact#,#postcode#,#cause#
+		)
+		<selectKey resultClass="long" keyProperty="id">
+			select max(person_id) from tb_base_person
+		</selectKey>
+	</insert>
+	
+	<delete id="deletePerson">
+		delete from tb_base_person 
+		where 1=1
+		<isNotEmpty property="personId">
+			and person_id = #personId#
+		</isNotEmpty>
+		<isNotEmpty property="coId">
+			and co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="personCode">
+			and person_code = #personCode#
+		</isNotEmpty>
+		<isNotEmpty property="personName">
+			and person_name = #personName#
+		</isNotEmpty>
+		<isNotEmpty property="sex">
+			and sex = #sex#
+		</isNotEmpty>
+		<isNotEmpty property="idCard">
+			and id_card = #idCard#
+		</isNotEmpty>
+		<isNotEmpty property="medicareCard">
+			and medicare_card = #medicareCard#
+		</isNotEmpty>
+		<isNotEmpty property="medicalRecordNumber"> 
+			and medical_record_number = #medicalRecordNumber#
+		</isNotEmpty>
+		<isNotEmpty property="departId">
+			and depart_id = #departId#
+		</isNotEmpty>
+	</delete>
+	<update id="updatePerson" parameterClass="java.util.HashMap">
+		update tb_base_person 
+		set modify_date = sysdate 
+		<isNotEmpty property="coId">
+			,co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="personCode">
+			,person_code = #personCode#
+		</isNotEmpty>
+		<isNotEmpty property="personName">
+			,person_name = #personName#
+		</isNotEmpty>
+		<isNotEmpty property="sex">
+			,sex = #sex#
+		</isNotEmpty>
+		<isNotEmpty property="birth">
+			,birth = to_date(#birth#,'YYYY-MM-DD')
+		</isNotEmpty>
+		<isNotEmpty property="idCard">
+			,id_card = #idCard#
+		</isNotEmpty>
+		<isNotEmpty property="cmedicareCard">
+			,medicare_card = #cmedicareCard#
+		</isNotEmpty>
+		<isNotEmpty property="mobile">
+			,mobile = #mobile#
+		</isNotEmpty>
+		<isNotEmpty property="tel">
+			,tel = #tel#
+		</isNotEmpty>
+		<isNotEmpty property="education">
+			,education = #education#
+		</isNotEmpty>
+		<isNotEmpty property="national">
+			,national = #national#
+		</isNotEmpty>
+		<isNotEmpty property="origin">
+			,origin = #origin#
+		</isNotEmpty>
+		<isNotEmpty property="ismarried">
+			,ismarried = #ismarried#
+		</isNotEmpty>
+		<isNotEmpty property="height">
+			,height = #height#
+		</isNotEmpty>
+		<isNotEmpty property="address">
+			,address = #address#
+		</isNotEmpty>
+		<isNotEmpty property="remark">
+			,remark = #remark#
+		</isNotEmpty>
+		<isNotEmpty property="medicalRecordNumber">
+			,medical_record_number = #medicalRecordNumber#
+		</isNotEmpty>
+		<isNotEmpty property="modifyUserId">
+			,modify_user_id = #modifyUserId#
+		</isNotEmpty>
+		<isNotEmpty property="departId">
+			,depart_id = #departId#
+		</isNotEmpty>
+		<isNotEmpty property="income">
+			,income = #income#
+		</isNotEmpty>
+		<isNotEmpty property="job">
+			,job = #job#
+		</isNotEmpty>
+		
+		<isNotEmpty property="contact">
+			,contact = #contact#
+		</isNotEmpty>
+		<isNotEmpty property="postcode">
+			,postcode = #postcode#
+		</isNotEmpty>
+		<isNotEmpty property="cause">
+			,cause = #cause#
+		</isNotEmpty>
+		
+		<isNotEmpty property="personId">
+			where person_id = #personId#
+		</isNotEmpty>
+		
+		
+		<isEmpty property="personId">
+			where 1 = 2
+		</isEmpty>
+	</update>
+	
+	<select id="queryPersonForMap" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+	<![CDATA[
+		select PERSON_ID id,PERSON_ID,ADDRESS ,to_char(BIRTH,'YYYY-MM-dd') BIRTH,CO_ID,
+     (select c.co_name from tb_base_company c where c.co_id = t.co_id) co_name,
+    to_char(CREATE_DATE,'yyyy-MM-dd hh24:mi:ss')  CREATE_DATE,
+    CREATE_USER_ID ,
+    (select tbu.user_code from tb_base_user tbu where tbu.user_id = t.create_user_id) create_user_name,
+    HEIGHT,ID_CARD,
+    ISMARRIED,
+    decode(ISMARRIED,0,'未婚',1,'已婚','') is_married_desc,
+    MEDICARE_CARD,
+    MOBILE,
+    to_char(MODIFY_DATE,'yyyy-MM-dd hh24:mi:ss') MODIFY_DATE,MODIFY_USER_ID,
+    (select tbu.user_code from tb_base_user tbu where tbu.user_id = t.modify_user_id) modify_user_name,
+    NATIONAL ,
+    ORIGIN   ,PERSON_CODE,
+    
+    PERSON_NAME,
+    
+    RECORD_STATUS,
+    REMARK,SEX,
+    decode(sex,0,'男',1,'女','') sex_desc,
+    TEL,VERSION,USER_ID,MEDICAL_RECORD_NUMBER,
+    DEPART_ID,
+    (select tbd.name from tb_base_department tbd where tbd.depart_id = t.depart_id) depart_name,
+    JOB,
+    /*decode(job,1,'工人',2,'农民（田间劳动）',3,'农民工',4,'公务员',5,'公司职员',6,'服务业人员',7,'个体经营户',8,'管理人员、干部',9,'离退休',10,'家务',11,'学生',12,'无业人员',13,'其他',14,'不详','') JOB_DESC,*/
+    CONTACT,
+    INCOME,
+    decode(INCOME,1,'<1千元',2,'1~3千元',3,'3~5千元',4,'5千元~1万元',5,'>1万元','') income_desc,
+    POSTCODE ,CAUSE,
+    EDUCATION,
+    decode(education,1,'小学或以下',2,'初中',3,'高中/中专',4,'大学或大专',5,'研究生',6,'不详','')  education_desc,
+    sf_get_person_identity(t.person_id) identity_desc
+    from tb_base_person t
+    where 1=1
+    
+    ]]>
+    <isNotEmpty property="personId" prepend="and">
+    	PERSON_ID = #personId#
+    </isNotEmpty>
+    <isNotEmpty property="personName" prepend="and">
+    	person_name = #personName#
+    </isNotEmpty>
+    <isNotEmpty property="asPersonName" prepend="and">
+    	person_name like '%'||#asPersonName#||'%'
+    </isNotEmpty>
+   	<isNotEmpty property="idCard" prepend="and">
+   		ID_CARD = #idCard#
+   	</isNotEmpty> 
+   	<isNotEmpty property="isMarried" prepend="and">
+   		ISMARRIED = #isMarried#
+   	</isNotEmpty>
+   	<isNotEmpty property="medicareCard" prepend="and">
+   		MEDICARE_CARD = #medicareCard#
+   	</isNotEmpty>
+    <isNotEmpty property="recordStatus" prepend="and">
+    	RECORD_STATUS = #recordStatus#
+    </isNotEmpty>
+   	<isEmpty property="recordStatus" prepend="and">
+   		RECORD_STATUS = 0
+   	</isEmpty>
+   	<isNotEmpty property="recordId" prepend="and">
+   		person_id = (select patient_id from tb_app_record where id = #recordId#)
+   	</isNotEmpty>
+   	<isNotEmpty property="identityId" prepend="and">
+   		exists (select 1 from tb_base_user u where u.person_id = t.person_id and u.user_property = #identityId#)
+   	</isNotEmpty>   	
+   	<isNotEmpty property="isPatient" prepend="and">
+   		(exists (select 1 from tb_base_user u where u.person_id = t.person_id and u.user_property = 2) or (select count(1) from tb_base_user u where u.person_id = t.person_id)=0)
+   	</isNotEmpty>
+   	
+   	<isNotEmpty property="archivesId" prepend="and">
+   		person_id = (select patient_id from tb_app_archives where id = #archivesId#)
+   	</isNotEmpty>
+   	order by CREATE_DATE desc
+	</select>
+	<select id="queryPersonCntForMap" parameterClass="java.util.HashMap" resultClass="java.lang.Integer">
+	<![CDATA[
+		select count(1) cnt
+    from tb_base_person t
+    where 1=1
+    
+    ]]>
+    <isNotEmpty property="personName" prepend="and">
+    	person_name = #personName#
+    </isNotEmpty>
+    <isNotEmpty property="asPersonName" prepend="and">
+    	person_name like '%'||#asPersonName#||'%'
+    </isNotEmpty>
+   	<isNotEmpty property="idCard" prepend="and">
+   		ID_CARD = #idCard#
+   	</isNotEmpty> 
+   	<isNotEmpty property="isMarried" prepend="and">
+   		ISMARRIED = #isMarried#
+   	</isNotEmpty>
+   	<isNotEmpty property="medicareCard" prepend="and">
+   		MEDICARE_CARD = #medicareCard#
+   	</isNotEmpty>
+    <isNotEmpty property="recordStatus" prepend="and">
+    	RECORD_STATUS = #recordStatus#
+    </isNotEmpty>
+   	<isEmpty property="recordStatus" prepend="and">
+   		RECORD_STATUS = 0
+   	</isEmpty>
+   	<isNotEmpty property="identityId" prepend="and">
+   		exists (select 1 from tb_base_user u where u.person_id = t.person_id and u.user_property = #identityId#)
+   	</isNotEmpty>   
+   	<isNotEmpty property="isPatient" prepend="and">
+   		(exists (select 1 from tb_base_user u where u.person_id = t.person_id and u.user_property = 2) or (select count(1) from tb_base_user u where u.person_id = t.person_id)=0)
+   	</isNotEmpty>
+   	<isNotEmpty property="archivesId" prepend="and">
+   		person_id = (select patient_id from tb_app_archives where id = #archivesId#)
+   	</isNotEmpty>
+	</select>
+</sqlMap>

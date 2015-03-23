@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="gjjxx">
+	
+	<select id="queryGjjxx" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select t1.*,
+      t2.XH gjjxx_xh,
+      to_char(t2.JNSJ,'yyyy-MM-dd hh24:mm:ss') JNSJ,      
+      t2.JNJE
+      from ry_jbxx t1,
+           gjjxx t2
+           
+      where t1.rybh = t2.rybh(+)
+
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="gjjzh">
+			and GJJZH = #gjjzh#
+		</isNotEmpty>
+		<isNotEmpty property="jnsj">
+			and to_char(JNSJ,'yyyy-MM-dd')  = #jnsj#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryGjjxxCnt" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+		select count(1) cnt
+      
+      from ry_jbxx t1,
+           gjjxx t2
+           
+      where t1.rybh = t2.rybh(+)
+
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="gjjzh">
+			and GJJZH = #gjjzh#
+		</isNotEmpty>
+		<isNotEmpty property="jnsj">
+			and to_char(JNSJ,'yyyy-MM-dd')  = #jnsj#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+</sqlMap>

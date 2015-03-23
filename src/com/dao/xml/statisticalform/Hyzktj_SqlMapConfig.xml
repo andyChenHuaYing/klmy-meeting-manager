@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="hyzktj">
+	
+	<select id="queryAreaMaritalStatus" resultClass="java.util.HashMap">
+		select area_id,area_name,married_number,unmarried_number
+		from t_area_marital_status
+	</select>
+	
+	<select id="queryYearMaritalStatus" resultClass="java.util.HashMap">
+		select year_desc,married_number,unmarried_number
+		from t_year_marital_status
+	</select>
+</sqlMap>

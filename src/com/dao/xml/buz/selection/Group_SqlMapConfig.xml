@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="group">
+
+    <select id="queryGroups" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+        select t1.id, t1.group_name
+        from
+        klmy_group t1
+        where 1=1
+        <isNotEmpty property="keyWord">
+            and group_name like '%'||#keyWord#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="groupName">
+            and group_name = #groupName#
+        </isNotEmpty>
+    </select>
+
+    <select id="queryGroupsCount" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+        select count(1) cnt
+        from
+        klmy_group
+        where 1=1
+        <isNotEmpty property="id">
+            and id != #id#
+        </isNotEmpty>
+        <isNotEmpty property="keyWord">
+            and group_name like '%'||#keyWord#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="groupName">
+            and group_name = #groupName#
+        </isNotEmpty>
+    </select>
+
+    <insert id="addGroup" parameterClass="java.util.HashMap">
+        insert into klmy_group t (id, group_name)
+        values(seq_klmy_group.nextval, #groupName#)
+        <selectKey keyProperty="id" resultClass="long">
+            select max(id) from klmy_group
+        </selectKey>
+    </insert>
+
+    <update id="updateGroupName" parameterClass="java.util.HashMap">
+		update klmy_group set group_name = #groupName#
+		where id = #id#
+	</update>
+</sqlMap>

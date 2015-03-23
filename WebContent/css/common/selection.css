@@ -1,0 +1,19 @@
+#queryConditionUL li {
+    display: inline-block;
+    width: 240px;
+    padding-right: 5px;
+}
+
+.queryPropTable {
+    width: 100%;
+}
+
+.queryPropTable .td1 {
+    width: 100px;
+    text-align: left;
+}
+
+.queryPropTable .td2 {
+    width: 140px;
+    text-align: right;
+}

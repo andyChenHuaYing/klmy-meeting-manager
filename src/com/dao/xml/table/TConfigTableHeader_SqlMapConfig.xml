@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tableHeader">	
+	<typeAlias alias="tableHeaderModel" type="com.vo.table.TConfigTableHeader"/>
+	<resultMap class="tableHeaderModel" id="tableHeaderMap">
+		<result property="id" column="ID"/>
+		<result property="gridId" column="GRID_ID"/>
+		<result property="field" column="FIELD"/>
+		<result property="title" column="TITLE"/>
+		<result property="width" column="WIDTH"/>
+		<result property="align" column="ALIGN"/>
+		<result property="valign" column="VALIGN"/>
+		<result property="rowspan" column="ROWSPAN"/>
+		<result property="colspan" column="COLSPAN"/>
+		<result property="headerLevel" column="HEADER_LEVEL"/>
+		<result property="hidden" column="HIDDEN"/>
+		<result property="height" column="HEIGHT"/>
+		<result property="seq" column="SEQ"/>
+		<result property="checkbox" column="CHECKBOX"/>		
+		<result property="sortable" column="sortable"/>
+		<result property="order" column="order"/>
+		<result property="resizable" column="resizable"/>
+		<result property="fixed" column="fixed"/>
+		<result property="isFrozen" column="is_frozen"/>
+		
+	</resultMap>
+		
+	<select id="queryTableHeaderForMap" parameterClass="java.util.HashMap" resultMap="tableHeaderMap">
+		select *
+		from T_CONFIG_TABLE_HEADER
+		where 1=1
+		<isNotEmpty property="id" prepend="and">
+			id=#id#
+		</isNotEmpty>
+		<isNotEmpty property="tableId" prepend="and">
+			GRID_ID = #tableId#
+		</isNotEmpty>
+		<isNotEmpty property="userId">
+			<isNotEmpty property="tableId">
+				and ((select count(1) from tb_base_user_table_header where user_id = #userId# and table_id = #tableId#) > 0
+						and exists (select tab_column_id from tb_base_user_table_header where user_id = #userId# and table_id = #tableId#  and tab_column_id = field)
+					or
+					(
+						(select count(1) from tb_base_user_table_header where user_id = #userId# and table_id = #tableId#) = 0
+					)
+				
+				)
+			</isNotEmpty>
+		</isNotEmpty>
+		order by is_frozen desc,header_level,seq
+	</select>
+	
+	<select id="queryUserTabColumn" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select user_id,table_id,tab_column_id from tb_base_user_table_header
+		where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="tableId" prepend="and">
+			table_id = #tableId#
+		</isNotEmpty>
+		<isNotEmpty property="tabColumnId" prepend="and">
+			tab_column_id = #tabColumnId#
+		</isNotEmpty>
+	</select>
+	<insert id="addUserTabColumn" parameterClass="java.util.HashMap">
+		insert into tb_base_user_table_header(user_id,table_id,tab_column_id)
+		values(#userId#,#tableId#,#tabColumnId#)
+	</insert>
+	<delete id="deleteUserTabColumn" parameterClass="java.util.HashMap">
+		delete from tb_base_user_table_header where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="tableId" prepend="and">
+			table_id = #tableId#
+		</isNotEmpty>
+		<isNotEmpty property="tabColumnId" prepend="and">
+			tab_column_id = #tabColumnId#
+		</isNotEmpty>
+	</delete>
+	
+	<select id="queryUserTabHeaderMap" resultClass="java.util.HashMap" parameterClass="long">
+		select table_id,tab_column_id from tb_base_user_table_header where user_id = #userId#
+		order by table_id
+	</select>
+	
+</sqlMap>

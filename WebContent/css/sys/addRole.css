@@ -1,0 +1,33 @@
+@CHARSET "UTF-8";
+.aaron_wrapper{ width:100%;}
+.aaron_wrapper img{  display:block; padding:0px; margin:0px; vertical-align:top; float:left; border:0px;}
+.aaron_add_table{ width:100%;}
+.aaron_add_table table{ width:100%;}
+.aaron_add_table table caption{ 
+	/*color:#0866c6;*/
+	color:#ffffff;
+	}
+.aaron_red_star{ color:red;}
+/*.aaron_table_selected_col{ background:#f4fafc;}*/
+.middle_td{ width:158px;}
+.role_list{ height:100px; width:150px; /*padding-right:20px;*/}
+.selected_role_list{ height:100px; width:150px; /*padding-left:20px;*/}
+.select_all{}
+.select_one{}
+.remove_one{}
+.remove_all{}
+.select_all,.select_one,.remove_one,.remove_all{ width:40px;}
+.select_dep{}
+.select_dep_content{ height:50%; width:40%; border:1px solid #ababab; position:fixed;   _position:absolute; top:25%; left:30%; background:#fafafa; z-index:9999; display:none;}
+.select_dep_title{ border-bottom:1px solid #ababab;}
+.select_dep_close{ float:right;}
+.aaron_pages{ font-size:12px; text-align:right;}
+.select_dep_table{ text-align:center;}
+.dep_list{ border-bottom:1px solid #ababab; border-left:1px solid #ababab; border-top:1px solid #ababab; text-align:left;}
+.dep_list tr td,.dep_list tr th{ border-right:1px solid #ababab;}
+.dep_list_selected{ background:red;}
+
+
+
+.aaron_table table tr th{ border-bottom:1px solid #ccc; border-right:1px solid #ccc; padding:0px; margin:0px; background:#d2ebf7; font-weight:normal; color:#0866c6;}
+/*.aaron_table_selected_col{ background:#f4fafc;}*/

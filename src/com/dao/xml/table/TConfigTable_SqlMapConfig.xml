@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="table">	
+	<typeAlias alias="tableModel" type="com.vo.table.TConfigTable"/>
+	<resultMap class="tableModel" id="tableMap">
+		<result property="id" column="ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="width" column="WIDTH"/>
+		<result property="height" column="HEIGHT"/>
+		<result property="singleselect" column="SINGLESELECT"/>
+		<result property="method" column="METHOD"/>
+		<result property="url" column="URL"/>
+		<result property="frozencolumns" column="frozencolumns"/>
+		<result property="resizehandle" column="resizehandle"/>
+		<result property="autorowheight" column="autorowheight"/>
+		<result property="striped" column="striped"/>
+		<result property="nowrap" column="nowrap"/>
+		<result property="idfield" column="idfield"/>
+		<result property="loadmsg" column="loadmsg"/>
+		<result property="pagination" column="pagination"/>
+		<result property="rownumbers" column="rownumbers"/>
+		<result property="checkonselect" column="checkonselect"/>
+		<result property="selectoncheck" column="selectoncheck"/>
+		<result property="pageposition" column="pageposition"/>
+		<result property="pagenumber" column="pagenumber"/>
+		<result property="pagesize" column="pagesize"/>
+		<result property="pagelist" column="pagelist"/>
+		<result property="sortname" column="sortname"/>
+		<result property="sortorder" column="sortorder"/>
+		<result property="multisort" column="multisort"/>
+		<result property="remotesort" column="remotesort"/>
+		<result property="showheader" column="showheader"/>
+		<result property="showfooter" column="showfooter"/>
+		<result property="scrollbarsize" column="scrollbarsize"/>
+		<result property="fitcolumns" column="fitcolumns"/>
+		<result property="note" column="note"/>
+	</resultMap>
+		
+	<select id="queryTableById" parameterClass="java.lang.String" resultMap="tableMap">
+		select *
+		from T_CONFIG_TABLE
+		where 1=1
+		and id = #id#
+	</select>
+	
+	<select id="queryAllTable" resultMap="tableMap">
+		select *
+		from T_CONFIG_TABLE
+	</select>
+	
+	
+</sqlMap>

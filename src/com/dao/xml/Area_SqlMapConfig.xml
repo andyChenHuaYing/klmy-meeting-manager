@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="area">
+	<typeAlias alias="areaModel" type="com.vo.TConfigArea"/>	
+	<resultMap class="areaModel" id="areaMap">
+		<result property="areaId" column="area_id"/>
+		<result property="areaName" column="area_name"/>
+		<result property="areaLevel" column="area_level"/>
+		<result property="parentAreaId" column="parent_area_id"/>
+		<result property="parentAreaName" column="parent_area_name"/>
+		<result property="note" column="note"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		
+	</resultMap>
+	
+	<select id="queryArea" resultMap="areaMap" parameterClass="java.util.HashMap">
+		select area_id,area_name,area_level,parent_area_id,
+		(select o.area_name from t_config_area o where o.area_id =t.parent_area_id ) parent_area_name,
+		note,create_user_id,create_date,modify_user_id,modify_date
+		from t_config_area t
+		where 1=1
+		<isNotEmpty property="areaId" prepend="and">
+			area_id = #areaId#
+		</isNotEmpty>
+		<isNotEmpty property="areaName" prepend="and">
+			area_name = #areaName#
+		</isNotEmpty>
+		<isNotEmpty property="areaLevel" prepend="and">
+			area_level = #areaLevel#
+		</isNotEmpty>
+		<isNotEmpty property="parentAreaId" prepend="and">
+			parent_area_id = #parentAreaId#
+		</isNotEmpty>
+		<isNotEmpty property="recursion" >
+			start with area_level = 1 connect by parent_area_id =  prior area_id
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryAreaForMap" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select area_id,area_name,area_level,parent_area_id,(select o.area_name from t_config_area o where o.area_id =t.parent_area_id ) parent_area_name,note,
+		create_user_id,create_date,modify_user_id,modify_date
+		from t_config_area t
+		where 1=1
+		<isNotEmpty property="areaId" prepend="and">
+			area_id = #areaId#
+		</isNotEmpty>
+		<isNotEmpty property="areaName" prepend="and">
+			area_name = #areaName#
+		</isNotEmpty>
+		<isNotEmpty property="areaLevel" prepend="and">
+			area_level = #area_level#
+		</isNotEmpty>
+		<isNotEmpty property="parentAreaId" prepend="and">
+			parent_area_id = #parentAreaId#
+		</isNotEmpty>
+		<isNotEmpty property="recursion" >
+			start with area_level = 1 connect by parent_area_id =  prior area_id
+		</isNotEmpty>
+	</select>
+	<insert id="addArea" parameterClass="java.util.HashMap">
+		insert into t_config_area(area_id,area_name,area_level,parent_area_id,note,create_user_id,create_date)
+		values(seq_t_config_area_id.nextval,#areaName#,nvl((select t.area_level+1 from t_config_area t where t.area_id=#parentAreaId#),1),#parentAreaId#,#note#,#userId#,sysdate)
+	</insert>
+	<update id="updateArea" parameterClass="java.util.HashMap">
+		update t_config_area
+		set 
+		<isNotEmpty property="areaName">
+			area_name=#areaName#,
+		</isNotEmpty>
+		
+		<isNotEmpty property="nullParentAreaId">
+			area_level=1,
+			parent_area_id=null,
+		</isNotEmpty>
+		<isNotEmpty property="parentAreaId">
+			area_level = nvl((select t.area_level+1 from t_config_area t where t.area_id=#parentAreaId#),1),
+			parent_area_id = #parentAreaId#,
+		</isNotEmpty>
+		<isNotEmpty property="note">
+			note=#note#,
+		</isNotEmpty>
+		<isNotEmpty property="modifyUserId">
+			modify_user_id = #modifyUserId#,
+		</isNotEmpty>
+		modify_date = sysdate
+		where area_id = #areaId#
+	</update>
+	<update id="updateAreaLevel" parameterClass="java.util.HashMap">
+		update t_config_area
+		set 
+		<isNotEmpty property="parentAreaId">
+			area_level = nvl((select t.area_level+1 from t_config_area t where t.area_id=#parentAreaId#),1),
+		</isNotEmpty>
+		<isNotEmpty property="modifyUserId">
+			modify_user_id = #modifyUserId#,
+		</isNotEmpty>
+		modify_date = sysdate
+		where parent_area_id = #parentAreaId#
+	</update>
+	<delete id="deleteArea" parameterClass="java.util.HashMap">
+		delete from t_config_area
+		where 1=1
+		<isNotEmpty property="recursion">
+			<isNotEmpty property="areaId" prepend="and">
+				area_id in (
+					select area_id from t_config_area
+					start with area_id = #areaId# connect by parent_area_id =  prior area_id
+				)
+			</isNotEmpty>
+		</isNotEmpty>
+		<isEmpty property="recursion" >
+			<isNotEmpty property="areaId" prepend="and">
+				area_id = #areaId#
+			</isNotEmpty>
+			<isNotEmpty property="areaIds" prepend="and">
+				area_id in 
+				<iterate open="(" close=")" conjunction="," property="areaIds">
+					#areaIds[]#
+				</iterate>
+			</isNotEmpty>
+		</isEmpty>
+	</delete>
+	
+	<select id="queryAreaNameNumber"  parameterClass="java.util.HashMap" resultClass="java.lang.Integer">
+		select count(1) from t_config_area t where t.area_name=#areaName#
+		<isNotEmpty property="parentAreaId" prepend="and">
+			t.parent_area_id = #parentAreaId#
+		</isNotEmpty>
+		<isNotEmpty property="areaId" prepend="and">
+			t.area_id != #areaId#
+		</isNotEmpty>
+	</select>
+</sqlMap>
+
+
+
+
+
+
+
+
+
+
+
+

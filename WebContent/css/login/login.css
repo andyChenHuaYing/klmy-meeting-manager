@@ -1,0 +1,67 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	background: #eee url(../images/bg.png) repeat-x
+}
+
+body,div,p,input { margin: 0; padding: 0; font: normal 12px "微软雅黑"; color: #333 }
+input { display:block; border: none; background: none }
+:focus { outline: 0 }
+
+#bigBox,#top,#middle,#bottom {
+	width: 1000px
+}
+
+#bigBox {
+	margin: 0 auto;
+	padding-top: 24px;
+	min-width: 902px
+}
+
+#top {
+	height: 109px;
+	background: url(../images/top.png) no-repeat
+}
+
+#middle {
+	height: 302px;
+	background: url(../images/middle.png) no-repeat;
+	position: relative
+}
+
+#bottom {
+	height: 100px;
+	background: url(../images/bottom.png) no-repeat
+}
+
+.loginInput {
+	width: 180px;
+	height: 28px;
+	position: absolute;
+	left: 450px;
+	font-size: 14px
+}
+
+.inputUsn {
+	top: 90px
+}
+
+.inputPsw {
+	top: 154px
+}
+
+.loginButton {
+	width: 277px;
+	height: 39px;
+	background: url(../images/button.png) no-repeat;
+	position: absolute;
+	left: 360px;
+	top: 220px;
+	cursor: pointer
+}
+
+.copyRight {
+	color: #8e8e8e;
+	text-align: center;
+	padding: 10px 0
+}

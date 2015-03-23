@@ -1,0 +1,267 @@
+@CHARSET "UTF-8";
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	font-family: 宋体,Geneva,Arial,Helvetica,sans-serif;
+    font-size: 80%;
+}
+.top-bg {
+            height: 58px;
+			background: url("../../images/sys/top_bg.jpg");
+}
+.content{
+	height: 633px;
+	width: 100%;
+	border-top: 4px solid #71a8f8;
+}
+.splitDiv{
+	height: 633px;
+	width: 4px;
+	background: #71a8f8;
+	position: absolute;
+	left: 200px;
+	z-index: 2;
+}
+.tabs{
+	width: 100%;
+	height: 28px;
+	position: absolute;
+	top:0;
+	left:0;
+	background: #e2edff;
+	border-bottom: 1px solid #95b8e7; 
+}
+#leftPart{
+	width: 200px;
+	position: absolute;
+	left:0px;
+	height: 633px;
+}
+.rightPart{
+	width: 80%;
+	position: absolute;
+	left: 200px;
+	height: 633px;
+}
+
+
+
+
+#leftPart dt {
+    background: url("../../images/sys/left_menu2_bg.gif") repeat-x scroll 0 0 transparent;
+    border-bottom: 1px solid #95B8E7;
+    display: block;
+    float: left;
+    line-height: 41px;
+    padding: 0;
+    width: 200px;
+}
+
+#leftPart dt span {
+    display: block;
+    float: right;
+    height: 16px;
+    margin-right: 20px;
+    width: 16px;
+}
+
+
+
+#leftPart dt span .smallicon_url {
+    height: 16px;
+    margin: 10px 0 0;
+    width: 16px;
+}
+fieldset, img {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+}
+img {
+    border: 0 none;
+    cursor: pointer;
+}
+
+
+#leftPart dt a {
+    color: #000000;
+    float: left;
+}
+a:link {
+    color: blue;
+    text-decoration: none;
+}
+a {
+    color: #333333;
+    outline: medium none;
+    text-decoration: none;
+}
+
+#leftPart dt a img {
+    float: left;
+    margin: 8px 10px 0 15px;
+}
+
+
+#leftPart dd {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-bottom: 1px solid #95B8E7;
+    float: left;
+    margin: 0;
+    padding: 8px 8px 8px 12px;
+    width: 200px;
+}
+
+
+#leftPart div {
+    border-right: 1px solid #559BFC;
+    float: left;
+    overflow: hidden;
+    width: 200px;
+}
+
+
+ul, ol {
+    list-style: none outside none;
+}
+
+#leftPart dd .content_pic li {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    display: block;
+    float: left;
+    height: 24px;
+    margin: 0 3px;
+    padding: 8px 0;
+    text-align: left;
+    width: 180px;
+}
+
+
+#leftPart dd .content_pic li img {
+    display: block;
+    float: left;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    width: 24px;
+}
+
+#leftPart dd .content_pic li em {
+    color: #000000;
+    display: block;
+    float: left;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 24px;
+    margin: 0 0 0 10px;
+    text-align: left;
+    width: 120px;
+}
+
+
+
+
+.tabs li {
+    display: inline;
+}
+.tabs li {
+    clear: right;
+    float: left;
+    height: 27px;
+    line-height: 27px;
+    list-style-image: none !important;
+    list-style-type: none;
+    margin: 2px 0 0 !important;
+    padding: 0;
+    text-indent: 0;
+}
+.tabs li {
+    border: 0 none;
+    margin: 0 4px -1px 0;
+    position: relative;
+}
+
+
+
+.tabs li a {
+    color: #525252;
+    display: inline;
+    font-family: Arial;
+    font-size: 12px;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    text-align: left;
+    text-decoration: none;
+    width: 28px;
+}
+
+.tab-left {
+    background: url("../../images/sys/tab_left.gif") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 27px;
+    width: 6px;
+}
+
+
+
+.tabs div.titleCenter {
+    background: url("../../images/sys/tab_mid.gif") repeat-x scroll 0 0 transparent;
+    cursor: pointer;
+    float: left;
+    margin: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+
+.tab-Right {
+    background: url("../../images/sys/tab_right.gif") no-repeat scroll 0 0 transparent;
+    float: right;
+    height: 27px;
+    margin-right: 4px;
+    width: 6px;
+}
+
+.tabs div.titleClose {
+    background: url("../../images/sys/tab_mid.gif") repeat-x scroll 0 0 transparent;
+    cursor: pointer;
+    float: left;
+    margin: 0;
+}
+
+.tabs div.closeOut {
+    background: url("../../images/sys/close[1].png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 25px;
+    margin-left: -5px;
+    margin-top: 8px;
+    width: 11px;
+}
+
+.tabs div.closeOut:hover {
+    background: url("../../images/sys/close1[1].png") no-repeat scroll 0 0 transparent;
+    
+}
+
+.tabs li.current, .tabs a.current:hover, .tabs li.current a {
+    background-position: 0 -62px;
+    color: #011E7A !important;
+    font-weight: 700;
+    height: 28px;
+}
+.contentDiv{
+	height: 100%;
+    margin-top: 29px;
+    /*padding-left: 6px;*/
+    overflow: hidden;
+    padding-left: 6px;
+}
+
+.tabs ul {
+    list-style: none outside none;
+}

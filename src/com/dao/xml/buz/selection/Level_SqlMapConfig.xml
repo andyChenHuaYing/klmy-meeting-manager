@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="level">
+
+    <select id="queryLevels" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+        select t1.id, t1.level_name
+        from
+        klmy_level t1
+        where 1=1
+        <isNotEmpty property="keyWord">
+            and level_name like '%'||#keyWord#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="levelName">
+            and level_name = #levelName#
+        </isNotEmpty>
+    </select>
+
+    <select id="queryLevelsCount" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+        select count(1) cnt
+        from
+        klmy_level
+        where 1=1
+        <isNotEmpty property="id">
+            and id != #id#
+        </isNotEmpty>
+        <isNotEmpty property="keyWord">
+            and level_name like '%'||#keyWord#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="levelName">
+            and level_name = #levelName#
+        </isNotEmpty>
+    </select>
+
+    <insert id="addLevel" parameterClass="java.util.HashMap">
+        insert into klmy_level t (id, level_name)
+        values(seq_klmy_level.nextval, #levelName#)
+        <selectKey keyProperty="id" resultClass="long">
+            select max(id) from klmy_level
+        </selectKey>
+    </insert>
+
+    <update id="updateLevelName" parameterClass="java.util.HashMap">
+		update klmy_level set level_name = #levelName#
+		where id = #id#
+	</update>
+</sqlMap>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="role">	
+	
+	<typeAlias alias="roleModel" type="com.vo.TBRole"/>
+	<resultMap class="roleModel" id="roleMap">
+		<result property="roleId" column="role_id"/>
+		<result property="roleName" column="role_name"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="createUserName" column="create_user_name"/>
+		<result property="modifyUserName" column="modify_user_name"/>
+	</resultMap>
+
+
+	<insert id="addRole" parameterClass="java.util.HashMap">
+		insert into tb_base_role(
+			role_id,role_name,create_user_id,create_date,remark
+		)	
+		values(
+			seq_tb_base_role_id.nextval,#roleName#,#createUserId#,sysdate,#remark#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select max(role_id) from tb_base_role
+		</selectKey>
+	</insert>
+	
+	<select id="queryRoleCnt" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select count(1) cnt
+ 		from tb_base_role t
+		where 1=1
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+		<isNotEmpty property="createUserId">
+			and create_user_id = #createUserId#
+		</isNotEmpty>
+		<isNotEmpty property="userId">
+			and role_id in (select r.role_id from tb_base_user_role r  where r.user_id = #userId#)
+		</isNotEmpty>
+		<isNotEmpty property="asRoleName" prepend="and">
+			role_name like '%'||#asRoleName#||'%'
+		</isNotEmpty>		
+		
+		
+	</select>
+	
+	<select id="queryRole" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select role_id id,role_id,role_name,create_user_id,
+		(select user_code from tb_base_user u where u.user_id = t.create_user_id) create_user_name,
+		modify_user_id,(select user_code from tb_base_user u where u.user_id = t.modify_user_id) modify_user_name,
+		to_char(create_date,'yyyy-MM-dd hh24:mi:ss') create_date,
+		to_char(modify_date,'yyyy-MM-dd hh24:mi:ss') modify_date
+ 		from tb_base_role t
+		where 1=1
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+		<isNotEmpty property="createUserId">
+			and create_user_id = #createUserId#
+		</isNotEmpty>
+		<isNotEmpty property="userId">
+			and role_id in (select r.role_id from tb_base_user_role r  where r.user_id = #userId#)
+		</isNotEmpty>
+		<isNotEmpty property="asRoleName" prepend="and">
+			role_name like '%'||#asRoleName#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="offRolegrpId" prepend="and">
+			role_id not in (select role_id from tb_base_rolegrp_role where rolegrp_id = #offRolegrpId#)
+		</isNotEmpty>		
+		<isNotEmpty property="rolegrpId" prepend="and">
+			role_id in (select role_id from tb_base_rolegrp_role where rolegrp_id = #rolegrpId#)
+		</isNotEmpty>
+		<isNotEmpty property="orderByRoleNameFlag" >
+			order by role_name asc
+		</isNotEmpty>
+		<isEmpty property="orderByRoleNameFlag" >
+			order by create_date desc
+		</isEmpty>
+	</select>
+	
+	<select id="queryRoleForVO" parameterClass="java.util.HashMap" resultMap="roleMap">
+		select role_id,role_name,create_user_id,
+		(select user_code from tb_base_user u where u.user_id = t.create_user_id) create_user_name,
+		modify_user_id,(select user_code from tb_base_user u where u.user_id = t.modify_user_id) modify_user_name,
+		to_char(create_date,'yyyy-MM-dd hh24:mi:ss') create_date,
+		to_char(modify_date,'yyyy-MM-dd hh24:mi:ss') modify_date
+ 		from tb_base_role t
+		where 1=1
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+		<isNotEmpty property="createUserId">
+			and create_user_id = #createUserId#
+		</isNotEmpty>
+		<isNotEmpty property="userId">
+			and role_id in (
+			
+			select r.role_id from tb_base_user_role r  where r.user_id = #userId#
+				<isNotEmpty property="queryByRolegrp">
+					union
+					select role_id from tb_base_user_rolegrp t1,tb_base_rolegrp_role t2
+ 					where t1.user_id = #userId# and t1.rolegrp_id = t2.rolegrp_id				
+				</isNotEmpty>
+			)
+		</isNotEmpty>
+		<isNotEmpty property="asRoleName" prepend="and">
+			role_name like '%'||#asRoleName#||'%'
+		</isNotEmpty>	
+		
+	</select>
+	
+	
+	
+	<update id="updateRole" parameterClass="java.util.HashMap">
+		update tb_base_role 
+		set modify_date = sysdate
+		<isNotEmpty property="roleName">
+			,role_name = #roleName#
+		</isNotEmpty>
+		<isNotEmpty property="modifyUserId">
+			,modify_user_id = #modifyUserId#
+		</isNotEmpty>
+		<isNotEmpty property="roleId">
+			where role_id = #roleId#
+		</isNotEmpty>
+		<isEmpty property="roleId">
+			where 1 = 2
+		</isEmpty>
+	</update>
+	
+	<delete id="deleteRole" parameterClass="java.util.HashMap">
+		delete from tb_base_role
+		where 1=1
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+		<isNotEmpty property="roleIdList">
+		    and role_id in 
+			<iterate property="roleIdList" open="(" close=")" conjunction=",">
+				#roleIdList[]#
+			</iterate>
+		</isNotEmpty>
+		
+	</delete>
+	<insert id="addUserRole" parameterClass="java.util.HashMap">
+		insert into tb_base_user_role(id,user_id,role_id,create_user_id,create_date)
+		values(seq_tb_base_user_role_id.nextval,#userId#,#roleId#,#createUserId#,sysdate)
+		<selectKey resultClass="long" keyProperty="id">
+			select max(id) from tb_base_user_role
+		</selectKey>
+	</insert>
+	
+	<insert id="addPatientRole" parameterClass="java.util.HashMap">
+		insert into tb_base_user_role(id,user_id,role_id,create_user_id,create_date)
+	    select seq_tb_base_user_role_id.nextval,#userId#,role_id,#createUserId#,sysdate
+	    from tb_base_role 
+	    where remark='defaultPatient'
+		<selectKey resultClass="long" keyProperty="id">
+			select max(id) from tb_base_user_role
+		</selectKey>
+	</insert>
+	<delete id="deleteUserRole" parameterClass="java.util.HashMap">
+		delete from tb_base_user_role
+		where 1=1
+		<isNotEmpty property="userId">
+			and user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+		<isNotEmpty property="userIdList" prepend="and">
+			user_id in 
+			<iterate open="(" close=")" property="userIdList" conjunction=",">
+				#userIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</delete>
+	<delete id="deleteRoleUnit" parameterClass="java.util.HashMap">
+		delete from tb_base_role_unit where 1=1
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+		<isNotEmpty property="unitId">
+			and unit_id = #unitId#
+		</isNotEmpty>
+		<isEmpty property="roleId">
+			<isEmpty property="unitId">
+				and 1=2
+			</isEmpty>
+		</isEmpty>
+	</delete>
+	
+	
+	<select id="queryUserRoleArea" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select user_id,role_id,area_id
+		from t_config_user_role_area
+		where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="roleId" prepend="and">
+			role_id = #roleId#
+		</isNotEmpty>
+		
+		<isNotEmpty property="areaId" prepend="and">
+			area_id = #areaId#
+		</isNotEmpty>
+		<isNotEmpty property="orderByRoleId">
+			order by role_id
+		</isNotEmpty>
+		
+	</select>
+	
+	<insert id="addUserRoleArea">
+		insert into t_config_user_role_area(user_id,role_id,area_id)
+		values(#userId#,#roleId#,#areaId#)
+	</insert>
+	
+	<delete id="deleteUserRoleArea">
+		delete from t_config_user_role_area where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="roleId" prepend="and">
+			role_id = #roleId#
+		</isNotEmpty>
+		
+		<isNotEmpty property="userIdList" prepend="and">
+			user_id in 
+			<iterate open="(" close=")" property="userIdList" conjunction=",">
+				#userIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</delete>
+	<select id="queryUserRoleAreaList" parameterClass="long" resultClass="java.util.HashMap">
+		select user_id,role_id,sf_get_arealist_by_role(t.user_id,t.role_id) idList from tb_base_user_role t
+		where user_id = #userId#
+	</select>
+	
+	<select id="queryRoleNameIsExist" parameterClass="java.lang.String" resultClass="long">
+		select count(1) from tb_base_role t where t.role_name = #roleName#
+	</select>
+	
+	<select id="queryRoleNameIsExistForUpdate" parameterClass="java.util.HashMap" resultClass="long">
+		select count(1) from tb_base_role t where t.role_name = #roleName# and t.role_id != #roleId#
+	</select>
+</sqlMap>

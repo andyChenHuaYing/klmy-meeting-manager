@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+.rightpanel { 
+	/*margin-left: 260px;*/ 
+	background: url(../images/bg1.png); background:#f4fafc;}
+.rightpanel:after { clear: both; content: ''; display: block; }
+.pageheader { padding: 20px; /*border-bottom: 1px solid #ddd; */position: relative; min-height: 450px;/* background: #fff;*/ }
+.content_top{width:900px;height:250px;margin:0 auto;}
+.top_doctor{float:left;width:400px;height:200px;margin:10px 15px;}
+.top_news{float:right;width:350px;height:200px;margin:10px 0;}
+.doctor_img{float:left;display:block;height:100px;}
+.doctor_details{float:left;margin-left:10px;}
+.top_doctor ul li{list-style-type:none;display:inline;}
+.doctor_details p{font-family:微软雅黑;}
+.doctor_details .p_user{color:#46b4e8;font-size:20px;margin:5px;}
+.doctor_details .p_time{color:#cfc9d9;font-size:14px;margin:5px;}
+.doctor_details .p_job{color:#333333;font-size:16px;}
+.t_news_top{height:30px;width:100%;background:#d2ebf7;}
+.t_news_top span{line-height:30px;margin-left:10px;color:#666666;font-size:14px;}
+.t_news_more{float:right;text-align:center;line-height:30px;height:100%;width:60px;background:#b8d4e1;}
+.top_news ul{margin-left:20px;}
+.top_news ul li span{float:right;margin-right:10px;}
+.footer_news ul{margin-left:20px;}
+.footer_news ul li span{float:right;margin-right:10px;}
+.top_doctor ul li a{color:red;cursor: pointer;}
+.t_news_top .t_news_more a{cursor: pointer;color:#666666;font-size:14px;}
+.content_footer{
+	border-top: 1px solid rgba(0, 0, 0, 0.4);
+    height: 250px;
+    margin: 0 auto;
+    padding-top: 10px;
+    width: 100%;
+	}
+.footer_news{float:left;width:400px;height:200px;margin:10px 15px;}
+.footer_date{float:right;width:350px;height:200px;margin:10px 0;}
+.maincontent { float: left; width: 100%; }
+.maincontentinner { padding: 20px; }
+.subtitle { text-transform: uppercase; font-size: 12px; color: #999; margin-bottom: 5px; }
+.subtitle2 { font-size: 13px; text-transform: uppercase; color: #333; margin-bottom: 5px; }
+
+.shortcuts { list-style: none; margin-top: 20px; overflow: hidden; clear: both; }
+.shortcuts li { display: inline-block; float: left; margin: 0 5px 5px 0; position: relative; }
+/*.shortcuts li a { display: block; width: 130px; height: 130px; background: #0866c6; color: #fff; font-size: 16px; }*/
+.shortcuts .events a{ display: block; width: 100px; height: 100px; background: #fd5241; color: #fff; font-size: 16px; }
+.shortcuts .products a{ display: block; width: 100px; height: 100px; background: #b4c542; color: #fff; font-size: 16px; }
+.shortcuts .archive a{ display: block; width: 100px; height: 100px; background: #f0af18; color: #fff; font-size: 16px; }
+.shortcuts .help a{ display: block; width: 100px; height: 100px; background: #63c3f3; color: #fff; font-size: 16px; }
+.shortcuts .add a{ display: block; width: 100px; height: 100px; background: #edf2f6; color: #dedede; font-size: 16px; }
+.shortcuts .events a:hover { background: #fc1801; text-decoration: none; }
+.shortcuts .products a:hover { background: #adc609; text-decoration: none; }
+.shortcuts .archive a:hover { background: #dc9b05; text-decoration: none; }
+.shortcuts .help a:hover { background: #1fadf4; text-decoration: none; }
+.shortcuts .add a:hover { background: #d6d9dc; text-decoration: none; }
+.shortcuts li .shortcuts-label { display: block; padding: 0 12px; }
+.shortcuts li .shortcuts-icon { display: block; width: 48px; height: 48px; padding: 30px 0 0 0; margin: 0 auto; }
+.shortcuts li .iconsi-event { background: url(../images/icons/icon-event.png) no-repeat center center; }
+.shortcuts li .iconsi-cart { background: url(../images/icons/icon-cart.png) no-repeat center center; }
+.shortcuts li .iconsi-archive { background: url(../images/icons/icon-archive.png) no-repeat center center; }
+.shortcuts li .iconsi-help { background: url(../images/icons/icon-help.png) no-repeat center center; }
+.shortcuts li .iconsi-images { background: url(../images/icons/icon-images.png) no-repeat center center; }
+.shortcuts li .iconsi-add { background: url(../images/icons/icon-add.png) no-repeat center center; }

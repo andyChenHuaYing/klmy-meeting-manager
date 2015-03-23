@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="rkbl">
+	
+	<select id="queryAreaAgeRatio" resultClass="java.util.HashMap">
+		select area_id,area_name,age1,age2,age3,age4,age5,age6,age7
+		from t_rkbl_area_age_ratio
+		where 1=1		
+	</select>
+	
+	<select id="queryAreaHhRatio"  resultClass="java.util.HashMap">
+		select area_id,area_name,nyhk,fnhk
+		from t_rkbl_area_hh_ratio
+	</select>
+	<select id="queryHhRatio" resultClass="java.util.HashMap">
+		select sum(nyhk) nyhk_num,sum(fnhk) fnhk_num
+    	from t_rkbl_area_hh_ratio
+	</select>
+	<select id="querySexYearNum" resultClass="java.util.HashMap">
+		select year_desc,male_number,female_number
+		from t_rkbl_sex_year_num
+		order by year_desc asc
+	</select>
+</sqlMap>

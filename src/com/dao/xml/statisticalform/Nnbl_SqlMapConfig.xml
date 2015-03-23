@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="nnbl">
+	
+	<select id="querySexAreaNumber" resultClass="java.util.HashMap">
+		select area_id,area_name,male_num,female_num
+		from t_sex_area_number
+	</select>
+	<select id="querySexAgePeriodNumber" resultClass="java.util.HashMap">
+		select sex,age1,age2,age3,age4,age5,age6,age7
+		from t_sex_age_number
+	</select>
+</sqlMap>

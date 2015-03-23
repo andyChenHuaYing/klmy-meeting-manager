@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="log">	
+	<typeAlias alias="logModel" type="com.vo.LogVO"/>
+	<resultMap class="logModel" id="logMap">
+		<result property="logId" column="log_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="remoteIp" column="remote_ip"/>		
+		<result property="resourceTable" column="resource_table"/>
+		<result property="resourceId" column="resource_id"/>
+		<result property="operationType" column="operation_type"/>
+		<result property="descption" column="descption"/>
+		<result property="logTime" column="log_time"/>	
+		<result property="operationTypeDesc" column = "operation_type_desc"/>	
+	</resultMap>
+	<select id="queryLog" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select log_id id, log_id,user_id,(select o.user_code from tb_base_user o where o.user_id = t.user_id) user_code,remote_ip,resource_table,
+		resource_id,operation_type,descption,
+		to_char(log_time,'yyyy-MM-dd hh24:mi:ss') log_time,
+		(select o.operation_type from tb_base_log_type o where o.log_type_id=t.operation_type) operation_type_desc
+		from tb_base_log t
+		where 1=1
+		<isNotEmpty property="logId" prepend="and">
+			log_id = #logId#
+		</isNotEmpty>
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="remoteIp" prepend="and">
+			remote_ip = #remoteIp#
+		</isNotEmpty>	
+		
+		<isNotEmpty property="resourceTable" prepend="and">
+			upper(resource_table) = upper(#resourceTable#)
+		</isNotEmpty>
+		<isNotEmpty property="resourceId" prepend="and">
+			resource_id = #resourceId#
+		</isNotEmpty>
+		<isNotEmpty property="operationType" prepend="and">
+			operation_type = #operationType#
+		</isNotEmpty>
+
+		<isNotEmpty property="logTime" prepend="and">
+			log_time &gt;= to_date(#logTime#, 'yyyy-MM-DD hh24:mi:ss')
+		</isNotEmpty>
+		<isNotEmpty property="endLogTime" prepend="and">
+			log_time &lt;= to_date(#endLogTime#, 'yyyy-MM-DD hh24:mi:ss')
+		</isNotEmpty>
+		<isNotEmpty property="userCode" prepend="and">
+			user_id in (select user_id from tb_base_user where user_code like '%'||#userCode#||'%')
+		</isNotEmpty>
+		order by log_time desc
+	</select>
+	
+	<select id="queryLogCnt" parameterClass="java.util.HashMap" resultClass="java.lang.Integer">
+		select count(1) cnt
+		from tb_base_log t
+		where 1=1
+		<isNotEmpty property="logId" prepend="and">
+			log_id = #logId#
+		</isNotEmpty>
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>		
+		<isNotEmpty property="userCode" prepend="and">
+			user_id in (select user_id from tb_base_user where user_code like '%'||#userCode#||'%')
+		</isNotEmpty>
+		
+		<isNotEmpty property="remoteIp" prepend="and">
+			remote_ip = #remoteIp#
+		</isNotEmpty>	
+		
+		<isNotEmpty property="resourceTable" prepend="and">
+			resource_table = #resourceTable#
+		</isNotEmpty>
+		<isNotEmpty property="resourceId" prepend="and">
+			resource_id = #resourceId#
+		</isNotEmpty>
+		<isNotEmpty property="operationType" prepend="and">
+			operation_type = #operationType#
+		</isNotEmpty>
+		<isNotEmpty property="logTime" prepend="and">
+			log_time &gt;= to_date(#logTime#, 'yyyy-MM-DD hh24:mi:ss')
+		</isNotEmpty>
+		<isNotEmpty property="endLogTime" prepend="and">
+			log_time &lt;= to_date(#endLogTime#, 'yyyy-MM-DD hh24:mi:ss')
+		</isNotEmpty>
+	</select>
+	
+	
+	<insert id="addLog" parameterClass="java.util.HashMap">
+		insert into tb_base_log(log_id,user_id,remote_ip,resource_table,resource_id,operation_type,descption)
+		values (seq_tb_base_log_id.nextval,#userId#,#remoteIp#,#resourceTable#,#resourceId#,#operationType#,#descption#)
+		<selectKey resultClass="long" keyProperty="id">
+			select max(log_id) from tb_base_log
+		</selectKey>
+	</insert>
+	
+	<select id="queryLogType" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select log_type_id,operation_type from tb_base_log_type
+	</select>
+	
+	<select id="queryUserTables" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select table_name from user_tables
+	</select>
+	
+</sqlMap>

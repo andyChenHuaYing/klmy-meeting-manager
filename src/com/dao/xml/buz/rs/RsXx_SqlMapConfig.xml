@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="rsxx">
+	
+	<select id="queryRsxx" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select t1.*,
+      t2.XH zgshbx_xh,
+      t2.CBLX,
+      t2.SBKH,
+      to_char(t2.JNSJ,'yyyy-MM-dd hh24:mm:ss') JNSJ,      
+      t2.YANGLBXJE,
+      t2.YLBXJE,
+      t2.GSBXJE,
+      t2.SHIYBXJE,
+      t2.SYBXJE,
+      t3.XH db_xh,
+      t3.CBLX,
+      t3.DBQK,
+      t3.DBJE,
+      to_char(t3.CBSJ,'yyyy-MM-dd hh24:mm:ss') CBSJ,
+      to_char(t3.TBSJ,'yyyy-MM-dd hh24:mm:ss') TBSJ,
+      t4.XH gzxx_xh,
+      t4.JYZK,
+      t4.ZYLB,
+      t4.FWDW,
+      t4.FWDWFZR,
+      t4.FWDWZCD,
+      t4.DWDH,
+      t4.GW,
+      t4.DWJYDZ,
+      t4.CBQK,
+      t4.QDLDHTXX,
+      t5.XH jtwwfx_xh,
+      t5.WWDX,
+      t5.WWLX,
+      t5.WWJ,
+      t5.WWR,
+      t5.BZ,
+      t5.WWRQ,
+      t6.XH smkxx_xh,
+      t6.SMKH,
+      t6.YHKH,
+      t6.SLZT,
+      to_char(t6.SQRQ,'yyyy-MM-dd hh24:mm:ss') SQRQ,
+      t7.XH jysydj_xh,
+      t7.JYSYZBH,
+      t7.SYJFF,
+      to_char(t7.FFSJ,'yyyy-MM-dd hh24:mm:ss') FFSJ,
+      t8.XH grbcyb_xh,
+      t8.YBLX,
+      to_char(t8.CBSJ,'yyyy-MM-dd hh24:mm:ss') CBSJ,
+      to_char(t8.TBSJ,'yyyy-MM-dd hh24:mm:ss') TBSJ
+      
+      from ry_jbxx t1,
+           rs_zgshbx t2,
+           rs_db t3,
+           rs_gzxx t4,
+           rs_jtwwfx t5,
+           rs_smkxx t6,
+           rs_jysydj t7,
+           rs_grbcyb t8
+      where t1.rybh = t2.rybh(+)
+            and t1.rybh = t3.rybh(+)
+            and t1.rybh = t4.rybh(+)
+            and t1.rybh = t5.rybh(+)
+            and t1.rybh = t6.rybh(+)
+            and t1.rybh = t7.rybh(+)
+            and t1.rybh = t8.rybh(+)
+       
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		
+		<isNotEmpty property="cblx">
+			and CBLX = #cblx#
+		</isNotEmpty>
+		
+		<isNotEmpty property="jnsj">
+			and to_char(JNSJ,'yyyy-MM-dd')  = #jnsj#
+		</isNotEmpty>
+		<isNotEmpty property="jyzk">
+			and JYZK  = #jyzk#
+		</isNotEmpty>
+		<isNotEmpty property="fwdw">
+			and FWDW = #fwdw#
+		</isNotEmpty>
+		<isNotEmpty property="jysyzbh">
+			and JYSYZBH = #jysyzbh#
+		</isNotEmpty>
+		<isNotEmpty property="dbqk">
+			and DBQK = #dbqk#
+		</isNotEmpty>
+		<isNotEmpty property="wwdx">
+			and WWDX = #wwdx#
+		</isNotEmpty>
+		<isNotEmpty property="smkh">
+			and SMKH = #smkh#
+		</isNotEmpty>
+		<isNotEmpty property="yblx">
+			and YBLX = #yblx#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryRsxxCnt" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+		select count(1) cnt
+      from ry_jbxx t1,
+           rs_zgshbx t2,
+           rs_db t3,
+           rs_gzxx t4,
+           rs_jtwwfx t5,
+           rs_smkxx t6,
+           rs_jysydj t7,
+           rs_grbcyb t8
+      where t1.rybh = t2.rybh(+)
+            and t1.rybh = t3.rybh(+)
+            and t1.rybh = t4.rybh(+)
+            and t1.rybh = t5.rybh(+)
+            and t1.rybh = t6.rybh(+)
+            and t1.rybh = t7.rybh(+)
+            and t1.rybh = t8.rybh(+)
+       
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		
+		<isNotEmpty property="cblx">
+			and CBLX = #cblx#
+		</isNotEmpty>
+		
+		<isNotEmpty property="jnsj">
+			and to_char(JNSJ,'yyyy-MM-dd')  = #jnsj#
+		</isNotEmpty>
+		<isNotEmpty property="jyzk">
+			and JYZK  = #jyzk#
+		</isNotEmpty>
+		<isNotEmpty property="fwdw">
+			and FWDW = #fwdw#
+		</isNotEmpty>
+		<isNotEmpty property="jysyzbh">
+			and JYSYZBH = #jysyzbh#
+		</isNotEmpty>
+		<isNotEmpty property="dbqk">
+			and DBQK = #dbqk#
+		</isNotEmpty>
+		<isNotEmpty property="wwdx">
+			and WWDX = #wwdx#
+		</isNotEmpty>
+		<isNotEmpty property="smkh">
+			and SMKH = #smkh#
+		</isNotEmpty>
+		<isNotEmpty property="yblx">
+			and YBLX = #yblx#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+</sqlMap>

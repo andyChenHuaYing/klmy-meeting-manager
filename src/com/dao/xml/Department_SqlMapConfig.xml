@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="department">	
+
+	<typeAlias alias="deptModel" type="com.vo.TbBaseDepartment"/>	
+	<resultMap class="deptModel" id="deptMap">
+		<result property="departId" column="depart_id"/>
+		<result property="name" column="name"/>
+		<result property="parentDepartId" column="parent_depart_id"/>
+		<result property="parentDepartName" column="parent_depart_name"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createUser" column="create_user"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="modifyUser" column="modify_user"/>
+		<result property="remark" column="remark"/>
+		<result property="version" column="version"/>
+		<result property="recordStatus" column="record_status"/>
+		<result property="areaId" column="area_id"/>
+		<result property="areaName" column="area_name"/>
+		<result property="deptLevel" column="dept_level"/>
+	</resultMap>
+
+
+	<select id="queryDepartment" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select depart_id,co_id,name,
+		parent_depart_id,
+		(select o.name from tb_base_department o where o.depart_id = t.parent_depart_id) parent_depart_name,
+		create_user_id,
+		(select user_code from tb_base_user where user_id = create_user_id) create_user,
+		to_char(create_date,'YYYY-MM-DD hh:mm:ss') create_date,
+		modify_user_id,
+		(select user_code from tb_base_user where user_id = modify_user_id) modify_user,
+		to_char(modify_date,'YYYY-MM-DD hh:mm:ss') modify_date,remark,version,record_status,area_id,
+		(select area_name from t_config_area o where o.area_id = t.area_id) area_name,
+		(select count(1) from tb_base_department d where  d.parent_depart_id = t.depart_id) cnt,
+		dept_level 
+		from tb_base_department t
+		where 1=1 and record_status=0
+		<isNotEmpty property="coId">
+			and co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="departId">
+			and depart_id = #departId#
+		</isNotEmpty>
+		<isNotEmpty property="parentDepartId">
+			and parent_depart_id =#parentDepartId#
+		</isNotEmpty>
+		<isNotEmpty property="level0">
+			and parent_depart_id is null
+		</isNotEmpty>
+		<isNotEmpty property="recursion" >
+			start with dept_level = 1 connect by parent_depart_id =  prior depart_id
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryDepartmentForVo" parameterClass="java.util.HashMap" resultMap="deptMap">
+		select depart_id,co_id,name,
+		parent_depart_id,
+		(select o.name from tb_base_department o where o.depart_id = t.parent_depart_id) parent_depart_name,
+		create_user_id,
+		(select user_code from tb_base_user where user_id = create_user_id) create_user,
+		to_char(create_date,'YYYY-MM-DD hh:mm:ss') create_date,
+		modify_user_id,
+		(select user_code from tb_base_user where user_id = modify_user_id) modify_user,
+		to_char(modify_date,'YYYY-MM-DD hh:mm:ss') modify_date,remark,version,record_status,area_id,
+		(select area_name from t_config_area o where o.area_id = t.area_id) area_name,
+		(select count(1) from tb_base_department d where  d.parent_depart_id = t.depart_id) cnt,
+		dept_level 
+		from tb_base_department t
+		where 1=1 and record_status=0
+		<isNotEmpty property="coId">
+			and co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="departId">
+			and depart_id = #departId#
+		</isNotEmpty>
+		<isNotEmpty property="parentDepartId">
+			and parent_depart_id =#parentDepartId#
+		</isNotEmpty>
+		<isNotEmpty property="level0">
+			and parent_depart_id is null
+		</isNotEmpty>
+		<isNotEmpty property="recursion" >
+			start with dept_level = 1 connect by parent_depart_id =  prior depart_id
+		</isNotEmpty>
+	</select>
+	
+	
+	<insert id="addDept" parameterClass="java.util.HashMap">
+		insert into tb_base_department(DEPART_ID,NAME,AREA_ID,DEPT_LEVEL,PARENT_DEPART_ID,CREATE_USER_ID,CREATE_DATE)
+		values(seq_tb_base_department_id.nextval,#name#,#areaId#,nvl((select dept_level+1 from tb_base_department where depart_id = #parentDepartId#),1),#parentDepartId#,#userId#,sysdate)
+	</insert>
+	
+	<update id="updateDept" parameterClass="java.util.HashMap">
+		update tb_base_department
+		set 
+		<isNotEmpty property="name">
+			name = #name#,
+		</isNotEmpty>
+		<isEmpty property="areaId">
+			area_id = null,
+		</isEmpty>
+		<isNotEmpty property="areaId">
+			area_id = #areaId#,
+		</isNotEmpty>
+		<isNotEmpty property="nullParentDepartId">
+			dept_level = 1,
+			PARENT_DEPART_ID = null, 
+		</isNotEmpty>
+		<isNotEmpty property="parentDepartId">
+			dept_level = nvl((select dept_level+1 from tb_base_department where depart_id = #parentDepartId#),1),
+			PARENT_DEPART_ID = #parentDepartId#,
+		</isNotEmpty>
+		<isNotEmpty property="modifyUserId">
+			modify_user_id = #modifyUserId#,
+		</isNotEmpty>
+		modify_date = sysdate
+		where depart_id = #departId#
+	</update>
+	
+	<update id="updateDeptLevel" parameterClass="java.util.HashMap">
+		update tb_base_department
+		set
+		<isNotEmpty property="parentDepartId">
+			dept_level = nvl((select dept_level+1 from tb_base_department where depart_id = #parentDepartId#),1),
+		</isNotEmpty>
+		<isNotEmpty property="modifyUserId">
+			modify_user_id = #modifyUserId#,
+		</isNotEmpty>
+		modify_date = sysdate
+		where parent_depart_id = #parentDepartId#
+	</update>
+	
+	
+	
+	<delete id="deleteDept" parameterClass="java.util.HashMap">
+		delete from tb_base_department
+		where 1=1
+		<isNotEmpty property="recursion">
+			<isNotEmpty property="deptId" prepend="and">
+				depart_id in (
+					select depart_id from tb_base_department
+					start with depart_id = #deptId# connect by parent_depart_id =  prior depart_id
+				)
+			</isNotEmpty>
+		</isNotEmpty>
+		<isEmpty property="recursion" >
+			<isNotEmpty property="deptId" prepend="and">
+				depart_id = #deptId#
+			</isNotEmpty>
+			<isNotEmpty property="deptIds" prepend="and">
+				depart_id in 
+				<iterate open="(" close=")" conjunction="," property="deptIds">
+					#deptIds[]#
+				</iterate>
+			</isNotEmpty>
+		
+		</isEmpty>
+	</delete>
+	
+	<select id="queryDeptNameNumber" parameterClass="java.util.HashMap" resultClass="java.lang.Integer">
+		select count(1) from tb_base_department t where t.name = #name#
+		<isNotEmpty property="parentDepartId" prepend="and">
+			t.parent_depart_id = #parentDepartId#
+		</isNotEmpty>
+		<isNotEmpty property="areaId" prepend="and">
+			t.area_id = #areaId#
+		</isNotEmpty>
+		<isNotEmpty property="deptId" prepend="and">
+			t.depart_id = #deptId#
+		</isNotEmpty>
+	</select>
+</sqlMap>

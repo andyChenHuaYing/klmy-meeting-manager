@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="rolegrp">	
+	
+	<typeAlias alias="rolegrpModel" type="com.vo.TbBaseRolegrp"/>
+	<resultMap class="rolegrpModel" id="rolegrpMap">
+		<result property="rolegrpId" column="rolegrp_id"/>
+		<result property="rolegrpName" column="rolegrp_name"/>
+		<result property="note" column="note"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="modifyUserName" column="modify_user_name"/>
+		<result property="createUserName" column="create_user_name"/>
+	</resultMap>
+
+
+	<insert id="addRolegrp" parameterClass="java.util.HashMap">
+		insert into tb_base_rolegrp(
+			rolegrp_id,rolegrp_name,create_user_id,create_date,note
+		)	
+		values(
+			SEQ_TB_BASE_ROLEGRP_ID.nextval,#rolegrpName#,#userId#,sysdate,#note#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select max(rolegrp_id) from tb_base_rolegrp
+		</selectKey>
+	</insert>
+	
+	<select id="queryRolegrpCnt" parameterClass="java.util.HashMap" resultClass="java.lang.Integer">
+		select count(1) cnt
+ 		from tb_base_rolegrp t
+		where 1=1
+		<isNotEmpty property="rolegrpId">
+			and rolegrp_id = #rolegrpId#
+		</isNotEmpty>
+		<isNotEmpty property="createUserId">
+			and create_user_id = #createUserId#
+		</isNotEmpty>
+		<isNotEmpty property="rolegrpName" prepend="and">
+			rolegrp_name = #rolegrpName#
+		</isNotEmpty>
+		<isNotEmpty property="asRolegrpName" prepend="and">
+			rolegrp_name like '%'||#asRolegrpName#||'%'
+		</isNotEmpty>		
+	</select>
+	
+	<select id="queryRolegrp" parameterClass="java.util.HashMap" resultMap="rolegrpMap">
+		select rolegrp_id,rolegrp_name,note,create_user_id,modify_user_id,
+		to_char(create_date,'yyyy-MM-dd hh24:mi:ss') create_date,
+		(select user_code from tb_base_user u where u.user_id = t.create_user_id) create_user_name,
+		to_char(modify_date,'yyyy-MM-dd hh24:mi:ss') modify_date,
+		(select user_code from tb_base_user u where u.user_id = t.modify_user_id) modify_user_name
+ 		from tb_base_rolegrp t
+		where 1=1
+		<isNotEmpty property="rolegrpId">
+			and rolegrp_id = #rolegrpId#
+		</isNotEmpty>
+		<isNotEmpty property="createUserId">
+			and create_user_id = #createUserId#
+		</isNotEmpty>
+		<isNotEmpty property="rolegrpName" prepend="and">
+			rolegrp_name = #rolegrpName#
+		</isNotEmpty>
+		<isNotEmpty property="asRolegrpName" prepend="and">
+			rolegrp_name like '%'||#asRolegrpName#||'%'
+		</isNotEmpty>		
+	</select>
+	
+	<update id="updateRolegrp" parameterClass="java.util.HashMap">
+		update tb_base_rolegrp 
+		set 
+		<isNotEmpty property="rolegrpName">
+			rolegrp_name = #rolegrpName#,
+		</isNotEmpty>
+		
+		<isNotEmpty property="note">
+			note = #note#,
+		</isNotEmpty>
+		
+		<isNotEmpty property="modifyUserId">
+			modify_user_id = #modifyUserId#,
+		</isNotEmpty>
+		modify_date = sysdate
+		<isNotEmpty property="rolegrpId">
+			where rolegrp_id = #rolegrpId#
+		</isNotEmpty>
+		
+	</update>
+	
+	<delete id="deleteRolegrp" parameterClass="java.util.HashMap">
+		delete from tb_base_rolegrp
+		where 1=1
+		<isNotEmpty property="rolegrpId">
+			and rolegrp_id = #rolegrpId#
+		</isNotEmpty>
+		<isNotEmpty property="rolegrpIdList">
+		    and rolegrp_id in 
+			<iterate property="rolegrpIdList" open="(" close=")" conjunction=",">
+				#rolegrpIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</delete>
+	
+	<insert id="addRolegrpRole" parameterClass="java.util.HashMap">
+		insert into tb_base_rolegrp_role(rolegrp_id,role_id)
+		values(#rolegrpId#,#roleId#)
+	</insert>
+	<delete id="deleteRolegrpRole" parameterClass="java.util.HashMap">
+		delete from tb_base_rolegrp_role
+		where 1=1
+		<isEmpty property="rolegrpId">
+			<isEmpty property="roleId">
+				1=2
+			</isEmpty>
+		</isEmpty>
+		<isNotEmpty property="rolegrpId">
+			and rolegrp_id = #rolegrpId#
+		</isNotEmpty>
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+	</delete>
+	<insert id="addUserRolegrp" parameterClass="java.util.HashMap">
+		insert into tb_base_user_rolegrp(id,rolegrp_id,user_id)
+		values(SEQ_tb_base_user_rolegrp_ID.nextval,#rolegrpId#,#userId#)
+	</insert>
+	<delete id="deleteUserRolegrp" parameterClass="java.util.HashMap">
+		delete from tb_base_user_rolegrp
+		where 1=1
+		<isEmpty property="userId">
+			<isEmpty property="rolegrpId">
+				<isEmpty property="userIdList">
+					and 1=2
+				</isEmpty>
+			</isEmpty>
+		</isEmpty>
+		<isNotEmpty property="userId" prepend="and">
+			user_id=#userId#
+		</isNotEmpty>
+		<isNotEmpty property="rolegrpId" prepend="and">
+			rolegrp_id=#rolegrpId#
+		</isNotEmpty>
+		<isNotEmpty property="userIdList" prepend="and">
+			user_id in 
+			<iterate open="(" close=")" property="userIdList" conjunction=",">
+				#userIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</delete>
+	
+	<select id="queryUserRolegrp"  parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select * from tb_base_user_rolegrp where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id=#userId#
+		</isNotEmpty>
+		<isNotEmpty property="rolegrpId" prepend="and">
+			rolegrp_id=#rolegrpId#
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryUserRolegrpArea" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select * from t_config_user_rolegrp_area
+		where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id=#userId#
+		</isNotEmpty>
+		<isNotEmpty property="rolegrpId" prepend="and">
+			rolegrp_id=#rolegrpId#
+		</isNotEmpty>
+	</select>
+	
+	<insert id="addUserRolegrpArea" parameterClass="java.util.HashMap">
+		insert into t_config_user_rolegrp_area(user_id,rolegrp_id,area_id)
+		values(#userId#,#rolegrpId#,#areaId#)
+	</insert>
+	<delete id="deleteUserRolegrpArea" parameterClass="java.util.HashMap">
+		delete from t_config_user_rolegrp_area
+		where 1=1
+		<isEmpty property="userId">
+			<isEmpty property="rolegrpId">
+				<isEmpty property="userIdList">
+					and 1=2
+				</isEmpty>
+			</isEmpty>
+		</isEmpty>
+		<isNotEmpty property="userId" prepend="and">
+			user_id=#userId#
+		</isNotEmpty>
+		<isNotEmpty property="rolegrpId" prepend="and">
+			rolegrp_id=#rolegrpId#
+		</isNotEmpty>
+		<isNotEmpty property="userIdList" prepend="and">
+			user_id in 
+			<iterate open="(" close=")" property="userIdList" conjunction=",">
+				#userIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</delete>
+	
+	<select id="queryRoleGroupNameCount" parameterClass="java.util.HashMap" resultClass="java.lang.Integer">
+		select count(1) from tb_base_rolegrp t where t.rolegrp_name = #rolegrpName#
+		<isNotEmpty  property="rolegrpId" prepend="and">
+			t.rolegrp_id != #rolegrpId#
+		</isNotEmpty>
+	</select>
+</sqlMap>

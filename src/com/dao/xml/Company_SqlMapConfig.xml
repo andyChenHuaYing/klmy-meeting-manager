@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="company">
+	<typeAlias alias="companyModel" type="com.vo.CompanyVo"/>	
+	<resultMap class="companyModel" id="companyMap">
+		<result property="coId" column="co_id"/>
+		<result property="coCode" column="co_code"/>
+		<result property="coName" column="co_name"/>
+		<result property="shortName" column="short_name"/>
+		<result property="postalAddress" column="postal_address"/>
+		<result property="postalCode" column="postal_code"/>
+		<result property="officeTel" column="office_tel"/>
+		<result property="email" column="email"/>
+		<result property="website" column="website"/>						
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="remark" column="remark"/>
+		<result property="version" column="version"/>
+		<result property="recordStatus" column="record_status"/>	
+	</resultMap>
+	
+	<select id="queryCompany" resultMap="companyMap" parameterClass="java.util.HashMap">
+		select co_id,co_code,co_name,
+		short_name,postal_address,
+		postal_code,office_tel,email,website,
+		create_user_id,to_char(create_date,'yyyy-MM-dd hh:mm:ss') create_date,modify_user_id,
+		to_char(modify_date,'yyyy-MM-dd hh:mm:ss') modify_date,
+		remark,version,record_status	
+		from tb_base_company
+		where 1=1
+		<isNotEmpty property="coId">
+			and co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="coCode">
+			and co_code = #coCode#
+		</isNotEmpty>
+		<isNotEmpty property="coName">
+			and co_name = #coName#
+		</isNotEmpty>
+		<isNotEmpty property="shortName">
+			and short_name = #shortName#
+		</isNotEmpty>
+		<isNotEmpty property="shortName">
+			and postal_address = #shortName#
+		</isNotEmpty>
+		<isNotEmpty property="postalCode">
+			and postal_code = #postalCode#
+		</isNotEmpty>
+		<isNotEmpty property="officeTel">
+			and office_tel = #officeTel#
+		</isNotEmpty>
+		<isNotEmpty property="email">
+			and email = #email#
+		</isNotEmpty>
+		<isNotEmpty property="website">
+			and website = #website#
+		</isNotEmpty>		
+		<isNotEmpty property="recordStatus">
+			and create_user_id = #createUserId#
+		</isNotEmpty>
+		<isNotEmpty property="recordStatus">
+			and create_date = #createDate#
+		</isNotEmpty>
+		<isNotEmpty property="recordStatus">
+			and remark = #remark#
+		</isNotEmpty>
+		<isNotEmpty property="recordStatus">
+			and version = #version#
+		</isNotEmpty>
+		<isNotEmpty property="recordStatus" >
+			and record_status = #recordStatus#
+		</isNotEmpty>
+		<isEmpty property="recordStatus">
+			and record_status = 0
+		</isEmpty>
+	</select>
+	
+	<delete id="deleteCompany" parameterClass="java.util.HashMap">
+		delete from tb_base_company where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			co_id = #coId#
+		</isNotEmpty>		
+	</delete>
+	<delete id="deleteCompanyByObj" parameterClass="companyModel">
+		delete from tb_base_company where 1=1
+		<isNotEmpty property="coId" prepend="and">
+			co_id = #coId#
+		</isNotEmpty>		
+	</delete>
+	<update id="updateCompany" parameterClass="companyModel">
+		update tb_base_company set 
+		<isNotEmpty property="coId">
+			co_code = #coId# ,
+		</isNotEmpty>
+		<isNotEmpty property="coName">
+			co_name = #coName#,
+		</isNotEmpty>
+		<isNotEmpty property="shortName">
+			short_name = #shortName# ,
+		</isNotEmpty>		
+		<isNotEmpty property="userPassword">
+			postal_address = #userPassword#,
+		</isNotEmpty>
+		<isNotEmpty property="postalCode">
+			postal_code = #postalCode# ,
+		</isNotEmpty>
+		<isNotEmpty property="officeTel">
+			office_tel = #officeTel#,
+		</isNotEmpty>
+		<isNotEmpty property="email">
+			email = #email# ,
+		</isNotEmpty>		
+		<isNotEmpty property="website">
+			website = #website#,
+		</isNotEmpty>
+		<isNotEmpty property="modifyUserId">
+			modify_user_id = #modifyUserId# ,
+		</isNotEmpty>
+		<isNotEmpty property="remark">
+			remark = #remark# ,
+		</isNotEmpty>		
+		<isNotEmpty property="version">
+			version = #version#,
+		</isNotEmpty>
+		<isNotEmpty property="recordStatus">
+			record_status = #recordStatus#,
+		</isNotEmpty>
+		<isEmpty property="recordStatus">
+			record_status = 0,
+		</isEmpty>		 
+		modify_date = sysdate
+		where 1=1
+		<isNotEmpty property="coId">
+			co_id = #coId#
+		</isNotEmpty>
+	</update>
+	
+	<insert id="addCompany" parameterClass="companyModel">
+		insert into tb_base_company(co_id,co_code,co_name,
+		short_name,postal_address,
+		postal_code,office_tel,email,website,
+		create_user_id,create_date,remark,version,record_status
+		) values (seq_tb_base_comany_co_id.nextval,#coCode#,#coName#,#shortName#,#postalAddress#,
+			#postalCode#,#officeTel#,#email#,#website#,#createUserId#,sysdate,#remark#,#version#,0
+		)
+	</insert>
+	
+</sqlMap>

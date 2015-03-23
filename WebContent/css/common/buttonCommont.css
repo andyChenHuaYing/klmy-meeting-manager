@@ -1,0 +1,91 @@
+@CHARSET "UTF-8";
+
+a.sts-link-btn {
+		    background-image: url("../../images/sys/linkbutton_bg.png");
+		    background-position: right 0;
+		    background-repeat: no-repeat;
+		    color: #444444;
+		    cursor: pointer;
+		    display: inline-block;
+		    height: 24px;
+		    margin: 0 5px;
+		    outline: medium none;
+		    padding-right: 22px;
+		    text-decoration: none;
+		}
+		
+		
+		a.sts-link-btn span.sts-link-btn-span {
+		    background-position: 0 -48px;
+		    display: inline-block;
+		    font-size: 12px;
+		    height: 16px;
+		    line-height: 16px;
+		    padding: 4px 0 4px 22px;
+		}
+		a.sts-link-btn span.sts-link-btn-span {
+		    background-image: url("../../images/sys/linkbutton_bg.png");
+		    background-repeat: no-repeat;
+		}
+		
+#btnDiv a{
+			text-decoration: none;
+			color:#333333;
+		}
+		#btnDiv a:hover{
+			text-decoration: underline;
+			color:red;
+		}
+		#btnUL {
+		    border: 1px solid gray;
+		    left: 8px;
+		    margin: 0;
+		    padding: 2px;
+		    position: absolute;
+		    top: 28px;
+		    width: 100%;
+		    background: #ffffff;
+		}
+		#btnUL li{
+			display: block;
+			text-align: center;
+			padding-top: 1px;
+			font-size: 15px;
+		}
+		#btnDiv img:hover{
+			cursor: pointer;
+		}
+		#btnDiv{
+			position: absolute;
+			top:95px;
+			right: 224px;
+			width: 80px;
+			height: 100px;
+			z-index: 1;
+		}	
+		
+		
+#btnDiv2 a{
+			text-decoration: none;
+			color:#333333;
+		}
+		#btnDiv2 a:hover{
+			text-decoration: underline;
+			color:red;
+		}		
+		#btnDiv2 img:hover{
+			cursor: pointer;
+		}
+		#btnDiv2{
+			position: absolute;
+			top:525px;
+			right: 224px;
+			width: 80px;
+			height: 100px;
+			z-index: 1;
+		}		
+		
+		.queryPropTable .td2 select{
+			width:155px;
+			height: 23px;
+		}

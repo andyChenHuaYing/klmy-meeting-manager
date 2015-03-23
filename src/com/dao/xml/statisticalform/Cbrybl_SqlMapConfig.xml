@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="cbrybl">
+	
+	<select id="queryAreaInsurance" resultClass="java.util.HashMap">
+		select area_id,area_name,social_security,low_security,personal_security
+		from t_area_insurance
+	</select>
+	<select id="queryAgePeriodInsurance" resultClass="java.util.HashMap">
+		select ap_id,ap_name,social_security,low_security,personal_security
+		from t_age_period_insurance
+	</select>
+	<select id="querySexInsurance" resultClass="java.util.HashMap">
+		select id,sex,social_security,low_security,personal_security
+		from t_sex_insurance
+	</select>
+</sqlMap>

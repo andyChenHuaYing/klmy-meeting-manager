@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="normalArea">
+
+    <select id="queryAreas" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+        select t1.id, t1.area_name
+        from
+        klmy_area t1
+        where 1=1
+        <isNotEmpty property="keyWord">
+            and area_name like '%'||#keyWord#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="normalAreaName">
+            and area_name = #normalAreaName#
+        </isNotEmpty>
+    </select>
+
+    <select id="queryAreasCount" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+        select count(1) cnt
+        from
+        klmy_area
+        where 1=1
+        <isNotEmpty property="id">
+            and id != #id#
+        </isNotEmpty>
+        <isNotEmpty property="keyWord">
+            and area_name like '%'||#keyWord#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="normalAreaName">
+            and area_name = #normalAreaName#
+        </isNotEmpty>
+    </select>
+
+    <insert id="addArea" parameterClass="java.util.HashMap">
+        insert into klmy_area t (id, area_name)
+        values(seq_klmy_area.nextval, #normalAreaName#)
+        <selectKey keyProperty="id" resultClass="long">
+            select max(id) from klmy_area
+        </selectKey>
+    </insert>
+
+    <update id="updateAreaName" parameterClass="java.util.HashMap">
+		update klmy_area set area_name = #normalAreaName#
+		where id = #id#
+	</update>
+</sqlMap>

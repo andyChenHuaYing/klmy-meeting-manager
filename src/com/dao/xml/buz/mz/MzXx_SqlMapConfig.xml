@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="mzxx">
+	
+	<select id="queryMzRyJbxx" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select t1.*,
+		t2.BM,t2.ZP,
+		to_char(t2.PZSJ,'yyyy-MM-dd hh24:mm:ss') PZSJ,
+		t2.HYZT,t2.POMC,t2.POSFZH,
+		to_char(t2.HYDJRQ,'yyyy-MM-dd hh24:mm:ss') HYDJRQ,
+		t2.DJBM,t2.DSZNZH,t2.BZDW,
+		to_char(t2.BLSJ,'yyyy-MM-dd hh24:mm:ss') BLSJ,
+		t3.FQSFZH,t3.FQXM,t3.MQSFZH,t3.MQXM,
+		t4.XYZJMC,t4.XYCD,t4.ZJZW,
+		to_char(t4.XYKSSJ,'yyyy-MM-dd hh24:mm:ss') XYKSSJ,
+		to_char(t4.XYJSSJ,'yyyy-MM-dd hh24:mm:ss') XYJSSJ,
+		t5.SHGXRSFZH,t5.SHGXRDZ,t5.SHGXRDH
+		from 
+		ry_jbxx t1,
+		mz_grhyxx t2,
+		mz_fmxx t3,
+		mz_zjxx t4,
+		mz_shgx t5
+		where t1.rybh = t2.rybh(+)
+		      and t1.rybh = t3.rybh(+)
+		      and t1.rybh = t4.rybh(+)
+		      and t1.rybh = t5.rybh(+)
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="hyzt">
+			and HYZT = #hyzt#
+		</isNotEmpty>
+		<isNotEmpty property="hydjrq">
+			and HYDJRQ = #hydjrq#
+		</isNotEmpty>
+		<isNotEmpty property="zh">
+			and ZH = #zh#
+		</isNotEmpty>
+		<isNotEmpty property="shgxrgx">
+			and SHGXRGX = #shgxrgx#
+		</isNotEmpty>
+		<isNotEmpty property="xyzjmc">
+			and XYZJMC = #xyzjmc#
+		</isNotEmpty>
+		<isNotEmpty property="zjzw">
+			and ZJZW = #zjzw#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryMzRyJbxxCnt" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+		select count(1) cnt 
+		 from 
+		ry_jbxx t1,
+		mz_grhyxx t2,
+		mz_fmxx t3,
+		mz_zjxx t4,
+		mz_shgx t5
+
+		where t1.rybh = t2.rybh(+)
+		      and t1.rybh = t3.rybh(+)
+		      and t1.rybh = t4.rybh(+)
+		      and t1.rybh = t5.rybh(+)
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and SFZXM = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="hyzt">
+			and HYZT = #hyzt#
+		</isNotEmpty>
+		<isNotEmpty property="hydjrq">
+			and HYDJRQ = #hydjrq#
+		</isNotEmpty>
+		<isNotEmpty property="zh">
+			and ZH = #zh#
+		</isNotEmpty>
+		<isNotEmpty property="shgxrgx">
+			and SHGXRGX = #shgxrgx#
+		</isNotEmpty>
+		<isNotEmpty property="xyzjmc">
+			and XYZJMC = #xyzjmc#
+		</isNotEmpty>
+		<isNotEmpty property="zjzw">
+			and ZJZW = #zjzw#
+		</isNotEmpty>
+		<isNotEmpty property="areaIdList" prepend="and">
+			t1.area_id in
+			<iterate open="(" close=")" property="areaIdList" conjunction=",">
+				#areaIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</select>
+</sqlMap>

@@ -1,0 +1,34 @@
+.clear{clear:both;}
+body{ margin:0px;}
+.d-body{width:100%;height:100%;}
+.title{width:100%;height:50px;background:#f5f5f5;border-bottom:1px solid #dedede;margin:0px;}
+.logo_add{width:50px;height:50px;float:left;background:url(images/logo2.png) no-repeat;margin-left:250px;}
+.logo_text{ padding-top:10px;float:left;font-size:25px;}
+.right{width:200px;height:50px;font-size:14px;float:right;}
+.right ul{list-style-type:none;}
+.right ul li{display:inline;}
+.reg_content{width:550px;margin:0px auto;}
+.reg_number{float:left;padding:10px;}
+.number_span{padding-left:100px;float:left;}
+.reg_content span{font-size:14px;color:#737373;}
+.beizhu{float:left;padding-right:5px;padding-top:5px;}
+.beizhu-body{float:left;}
+.reg_button{padding-top:10px;padding-left:95px;}
+.reg_button_reg{float:left;padding-right:10px;}
+.reg_button_reg img{width:110px;height:30px;}
+.reg_button_return img{width:110px;height:30px;}
+.reg_number_phone{float:left;}
+.reg_number_get{float:left;padding-left:10px;}
+/*.input_normal{width:300px;height:20px;}*/
+.input_text{width:100px;height:20px;}
+.beizhu-body textarea{width:300px;height:80px;}
+h2{text-align:center;}
+.footer{width:840px;margin-left:-120px;border-top:1px solid #dedede;background:linear-gradient(#f6f6f6,#fff);}
+.about{width:600px;margin:15px 130px;text-align:center;float:left;}
+.about .about1{width:600px;float:left;}
+.about .about2{width:600px;padding-top:10px;float:left;}
+#errorCard{float:left;font-size:14px;color:red;padding-top:5px;}
+#errorLoginName{font-size:14px;color:red;padding-top:5px;}
+#errorPassword{font-size:14px;color:red;padding-top:5px;}
+.number_reg{float:left;}
+.logo img {  }

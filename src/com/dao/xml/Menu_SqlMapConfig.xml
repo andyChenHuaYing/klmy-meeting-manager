@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="menu">	
+	<typeAlias alias="menuModel" type="com.vo.TBMenu"/>
+	<resultMap class="menuModel" id="menuMap">
+		<result property="menuId" column="menu_id"/>
+		<result property="name" column="name"/>
+		<result property="uri" column="url"/>
+		<result property="orderIndex" column="order_index"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="remark" column="remark"/>
+		<result property="version" column="version"/>
+		<result property="recordStatus" column="record_status"/>
+		<result property="icon" column="icon"/>
+		<result property="topMenu" column="top_menu"/>
+	</resultMap>
+		
+	<select id="queryMenu" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select menu_id,name,uri,
+		order_index,parent_menu_id,
+		create_user_id,
+		to_char(create_date,'YYYY-MM-DD hh:mm:ss') create_date,
+		modify_user_id,
+		to_char(modify_date,'YYYY-MM-DD hh:mm:ss') modify_date,
+		remark,version,record_status,
+		icon,top_menu
+		from tb_base_menu
+		where 1=1
+		<isNotEmpty property="menuId" prepend="and">
+			menu_id = #menuId#
+		</isNotEmpty>
+		<isNotEmpty property="name" prepend="and">
+			name = #name#
+		</isNotEmpty>
+		<isNotEmpty property="uri" prepend="and">
+			uri = #uri#
+		</isNotEmpty>
+		<isEmpty property="recordStatus" prepend="and">
+			record_status = 0
+		</isEmpty>
+		<isNotEmpty property="order_index" prepend="and">
+			order_index = #orderIndex#
+		</isNotEmpty>
+		<isNotEmpty property="parentMenuId" prepend="and">
+			parent_menu_id = #parentMenuId#
+		</isNotEmpty>
+		<isNotEmpty property="nullParentMenuId" prepend="and">
+			parent_menu_id is null
+		</isNotEmpty>
+		
+		<isNotEmpty property="topMenu" prepend="and">
+			top_menu = #topMenu#
+		</isNotEmpty>
+		
+		<isNotEmpty property="userId" prepend="and">
+			menu_id in (select menu_id from tb_base_role_menu where role_id in (
+			select role_id from tb_base_user_role where user_id = #userId#
+			union
+			select role_id from tb_base_user_rolegrp t1,tb_base_rolegrp_role t2
+ 			where t1.user_id = #userId# and t1.rolegrp_id = t2.rolegrp_id
+			))		
+		</isNotEmpty>
+		<isNotEmpty property="roleId" prepend="and">
+			menu_id in (select menu_id from tb_base_role_menu where role_id = #roleId#)
+		</isNotEmpty>
+		<isNotEmpty property="recursion">
+			start with uri = 'parent' connect by parent_menu_id = prior menu_id
+		</isNotEmpty>
+		<isEmpty property="recursion"> 
+			order by parent_menu_id asc nulls first,order_index
+		</isEmpty>
+		
+	</select>
+	
+	<delete id="deleteMenu" parameterClass="java.util.HashMap">
+		delete from tb_base_menu where 1=1
+		<isNotEmpty property="menuId" prepend="and">
+			menu_id = #menuId#
+		</isNotEmpty>
+		<isNotEmpty property="name" prepend="and">
+			name = #name#
+		</isNotEmpty>
+		<isNotEmpty property="uri" prepend="and">
+			uri = #uri#
+		</isNotEmpty>
+		<isNotEmpty property="order_index" prepend="and">
+			order_index = #orderIndex#
+		</isNotEmpty>
+		<isNotEmpty property="parentMenuId" prepend="and">
+			parent_menu_id = #parentMenuId#
+		</isNotEmpty>
+	</delete>
+	
+	<update id="updateMenu" parameterClass="java.util.HashMap">
+		update tb_base_menu set
+		<isNotEmpty property="name">
+			name = #name#,
+		</isNotEmpty>
+		<isNotEmpty property="uri">
+			uri = #uri# ,
+		</isNotEmpty>		
+		<isNotEmpty property="orderIndex">
+			order_index = #orderIndex#,
+		</isNotEmpty>
+		<isNotEmpty property="parentMenuId">
+			parent_menu_id = #parentMenuId#,
+		</isNotEmpty>
+		<isNotEmpty property="remark">
+			remark = #remark#,
+		</isNotEmpty>
+		
+		<isNotEmpty property="version">
+			version = #version#,
+		</isNotEmpty>
+		<isNotEmpty property="recordStatus">
+			record_status = #recordStatus#,
+		</isNotEmpty>
+		<isEmpty property="recordStatus">
+			record_status = 0,
+		</isEmpty>	
+		modify_date = sysdate	
+		where 1=1		
+		<isNotEmpty property="menuId">
+			menu_id = #menuId#
+		</isNotEmpty>
+		
+	</update>
+	
+	<insert id="addMenu" parameterClass="java.util.HashMap">
+		insert into tb_base_menu(menu_id,name,uri,order_index,parent_menu_id,create_user_id,create_date,modify_user_id,modify_date,remark,version)
+		values (seq_tb_base_menu_id.nextval,#name#,#uri#,#orderIndex#,#parentMenuId#,#userId#,sysdate,#modifyUserId#,#modifyDate#,#remark#,#version#) 
+	</insert>
+	
+	<insert id="addRoleMenu" parameterClass="java.util.HashMap">
+		insert into tb_base_role_menu(id,role_id,menu_id,create_user_id,create_date)
+		values(seq_tb_base_role_menu_id.nextval,#roleId#,#menuId#,#createUserId#,sysdate)
+		<selectKey resultClass="long" keyProperty="id">
+			select max(id) from tb_base_role_menu
+		</selectKey>
+	</insert>
+	<delete id="deleteRoleMenu" parameterClass="java.util.HashMap">
+		delete from tb_base_role_menu where 1=1
+		<isNotEmpty property="roleId">
+			and role_id = #roleId#
+		</isNotEmpty>
+	</delete>
+</sqlMap>

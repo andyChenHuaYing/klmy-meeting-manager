@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="user">	
+	<typeAlias alias="userModel" type="com.vo.UserVO"/>
+	<resultMap class="userModel" id="userMap">
+		<result property="userId" column="user_id"/>
+		<result property="coId" column="co_id"/>
+		<result property="departId" column="depart_id"/>
+		<result property="userCode" column="user_code"/>
+		<result property="userPassword" column="user_password"/>
+		<result property="expireDate" column="expire_date"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyUserId" column="modify_user_id"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="remark" column="remark"/>
+		<result property="version" column="version"/>
+		<result property="recordStatus" column="record_status"/>
+		<result property="userName" column="user_name"/>
+		<result property="phone" column="phone"/>
+		<result property="email" column="email"/>
+		<result property="departName" column="depart_name"/>
+	</resultMap>
+	
+	<select id="queryUser" parameterClass="java.util.HashMap" resultMap="userMap">
+		select user_id,co_id,depart_id,
+			user_code,user_password,expire_date,
+			create_user_id,create_date,
+			modify_user_id,modify_date,
+			remark,version,record_status,user_name,phone,email,
+			(select name from tb_base_department o where o.depart_id = t.depart_id) depart_name 
+		from tb_base_user t
+		where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="userCode" prepend="and">
+			user_code = #userCode#
+		</isNotEmpty>
+		<isNotEmpty property="userPassword" prepend="and">
+			user_password = #userPassword#
+		</isNotEmpty>
+		<isEmpty property="recordStatus" prepend="and">
+			record_status = 0
+		</isEmpty>
+		<isNotEmpty property="coId" prepend="and">
+			co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="departId" prepend="and">
+			depart_id = #departId#
+		</isNotEmpty>
+	</select>
+	
+	<select id="getUserById" parameterClass="long" resultMap="userMap">
+		select user_id,co_id,depart_id,
+			user_code,user_password,expire_date,
+			create_user_id,create_date,
+			modify_user_id,modify_date,
+			remark,version,record_status,user_name,phone,email,
+			(select name from tb_base_department o where o.depart_id = t.depart_id) depart_name 
+			from tb_base_user where user_id = #userId#
+	</select>
+	
+	<select id="queryUserCntForMap"  parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select count(1) cnt
+      from tb_base_user t
+    where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="userCode" prepend="and">
+			user_code = #userCode#
+		</isNotEmpty>
+		<isNotEmpty property="asUserCode" prepend="and">
+			user_code like '%'||#asUserCode#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="userPassword" prepend="and">
+			user_password = #userPassword#
+		</isNotEmpty>
+		<isEmpty property="recordStatus" prepend="and">
+			record_status = 0
+		</isEmpty>
+		<isNotEmpty property="coId" prepend="and">
+			co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="departId" prepend="and">
+			depart_id = #departId#
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryUserForMap" parameterClass="java.util.HashMap" resultClass="java.util.HashMap">
+		select user_id id, user_id,co_id,
+        (select co_name from tb_base_company c where c.co_id=t.co_id) co_name,
+        depart_id,
+        user_code ,user_password,expire_date,
+        create_user_id,(select user_code from tb_base_user u where u.user_id=t.create_user_id) create_user,
+        to_char(create_date,'yyyy-MM-dd hh24:mi:ss') create_date,
+        modify_user_id,
+        (select user_code from tb_base_user u where u.user_id=t.modify_user_id) modify_user,
+        to_char(modify_date,'yyyy-MM-dd hh24:mi:ss') modify_date,
+        remark,version,record_status,user_name,phone,email,
+        (select name from tb_base_department o where o.depart_id = t.depart_id) depart_name
+      from tb_base_user t
+    where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="userCode" prepend="and">
+			user_code = #userCode#
+		</isNotEmpty>
+		<isNotEmpty property="asUserCode" prepend="and">
+			user_code like '%'||#asUserCode#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="userPassword" prepend="and">
+			user_password = #userPassword#
+		</isNotEmpty>
+		<isEmpty property="recordStatus" prepend="and">
+			record_status = 0
+		</isEmpty>
+		<isNotEmpty property="coId" prepend="and">
+			co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="departId" prepend="and">
+			depart_id = #departId#
+		</isNotEmpty>
+		order by create_date desc
+	</select>
+	
+	
+	<delete id="deleteUser" parameterClass="java.util.HashMap">
+		delete from tb_base_user where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="userCode" prepend="and">
+			user_code = #userCode#
+		</isNotEmpty>
+		<isNotEmpty property="userPassword" prepend="and">
+			user_password = #userPassword#
+		</isNotEmpty>
+		<isEmpty property="recordStatus" prepend="and">
+			record_status = 0
+		</isEmpty>
+		<isNotEmpty property="coId" prepend="and">
+			co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="departId" prepend="and">
+			depart_id = #departId#
+		</isNotEmpty>
+		
+		<isNotEmpty property="userIdList" prepend="and">
+			user_id in 
+			<iterate open="(" close=")" property="userIdList" conjunction=",">
+				#userIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</delete>
+	
+	<delete id="deleteUserRole" parameterClass="java.util.HashMap">
+		delete from tb_base_user_role where 1=1
+		<isNotEmpty property="userId" prepend="and">
+			user_id = #userId#
+		</isNotEmpty>
+		<isNotEmpty property="userIdList" prepend="and">
+			user_id in 
+			<iterate open="(" close=")" property="userIdList" conjunction=",">
+				#userIdList[]#
+			</iterate>
+		</isNotEmpty>
+	</delete>
+	
+	<update id="updateUser" parameterClass="java.util.HashMap">
+		update tb_base_user set
+			modify_date = sysdate
+		<isNotEmpty property="coId">
+			,co_id = #coId#
+		</isNotEmpty>
+		<isNotEmpty property="departId">
+			,depart_id = #departId#
+		</isNotEmpty>
+		<isNotEmpty property="userCode">
+			,user_code = #userCode#
+		</isNotEmpty>		
+		<isNotEmpty property="userPassword">
+			,user_password = #userPassword#
+		</isNotEmpty>
+		<isNotEmpty property="expireDate">
+			,expire_date = #expireDate#
+		</isNotEmpty>
+		<isNotEmpty property="coId">
+			,modify_user_id = #modifyUserId#
+		</isNotEmpty>
+		<isNotEmpty property="remark">
+			,remark = #remark#
+		</isNotEmpty>
+		<isNotEmpty property="version">
+			,version = #version#
+		</isNotEmpty>
+		<isNotEmpty property="recordStatus">
+			,record_status = #recordStatus#
+		</isNotEmpty>
+		<isEmpty property="recordStatus">
+			,record_status = 0
+		</isEmpty>	
+		<isNotEmpty property="userName">
+			,user_name = #userName#
+		</isNotEmpty>
+		<isNotEmpty property="phone">
+			,phone=#phone#
+		</isNotEmpty>
+		<isNotEmpty property="email">
+			,email=#email#
+		</isNotEmpty>
+		<isNotEmpty property="userId">
+			where  user_id = #userId#
+		</isNotEmpty>
+	</update>
+	
+	<insert id="addUser" parameterClass="java.util.HashMap">
+		insert into tb_base_user(user_id,co_id,depart_id,user_code,user_password,expire_date,create_user_id,create_date,
+		remark,version,user_name,phone,email) values (seq_tb_base_user_id.nextval,#coId#,#departId#,#userCode#,#userPassword#,#expireDate#,#createUserId#,sysdate,#remark#,nvl(#version#,1),#userName#,#phone#,#email#)
+		<selectKey keyProperty="id" resultClass="long">
+			select max(user_id) from tb_base_user
+		</selectKey>
+	</insert>
+	
+	<select id="queryUserNamesNumber" parameterClass="java.util.HashMap" resultClass="java.lang.Integer">
+		select count(1) from tb_base_user t1 where t1.user_code = #userCode#
+		<isNotEmpty property="userId" prepend="and">
+			t1.user_id != #userId#
+		</isNotEmpty>
+	</select>
+</sqlMap>
+
+
+
+

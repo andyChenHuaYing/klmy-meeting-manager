@@ -1,0 +1,72 @@
+.patient_title{background:#d2ebf7;height:40px;}
+.patient_title ul li{list-style-type:none;display:inline;line-height:40px;cursor: pointer;}
+.patient_table tr td{ width:150px; }
+.patient_table tr .old{width:270px;}
+.table_gray{background:#f0f6f8;}
+.table_white{background:#fff;}
+.patient_table tr .xueli{text-align:left;}
+.zhengduanshi_table tr td{width:350px;}
+.p_ul{float:left;text-align:center;line-height:40px;width:100px;}
+.p_ul:hover{background:#63c3f3;color:#fff;}
+.ul_1{background:#2195d2;/*background:url(../images/patient_01.png);*/}
+.zhengduanshi_table tr .zhengduan_time{width:500px;}
+.jiwangshi_table tr td{width:260px;}
+.jiwangshi_table tr .boolean{width:250px;}
+.yinsu_table tr td{width:200px;}
+.yinsu_table tr .yinsu_td{width:90%;text-align:left;}
+.yinsu_table tr td span{line-height:40px;}
+.zhengzhuang_table{border-collapse:collapse;font-size:13px;}
+.zhengzhuang_table tr td{text-align:center;line-height:40px;width:150px;height:40px;border:1px solid #dedede;}
+.patient_table input{ border:0px;background:transparent; border-top:0px; }
+.all_table{ border-collapse:collapse;font-size:13px;width:100%; }
+.all_table tr td{ border:1px solid #dedede;line-height:40px;text-align:center; }
+.all_table input{
+	border:none;
+	border:0px;
+	margin:0 auto;
+	margin-bottom:0px;padding-right:0px;padding-left:0px;
+}
+.all_table tr .boolean input{ width:100%;  }
+.fenji_table tr td{ width:300px; }
+.all_table tr .bg_input input{ background:#fff; }
+#submit{ float:right;margin-top:20px; }
+#OK{ background:#2195d2;border:0px;color:#fff;width:100px;height:30px; }
+.wuchuang_table tr td{ width:200px }
+.all_table tr .small_input input{ width:30px;height:20px; }
+.queding_table .width_td1{ width:5%; }
+.queding_table .width_td2{ width:10%; }
+.queding_table .width_td3{ width:10%; }
+.queding_table .width_td4{ width:10%; }
+.queding_table .width_td5{ width:25%; }
+.queding_table .width_td6{ width:10%; }
+.queding_table .width_td7{ width:30%; }
+
+
+.youyin_table tr td{ width:200px; }
+.feikoufu_table tr td{width:250px; }
+
+.all_table tr .font{ font-size:16px; }
+
+
+.all_table tr .td_width1{ width:5%; }
+.all_table tr .td_width2{ width:10%;}
+.all_table tr .td_width3{ width:15%; }
+.all_table tr .td_width4{ width:20%; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

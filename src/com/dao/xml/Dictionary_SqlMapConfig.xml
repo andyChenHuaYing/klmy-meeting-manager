@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="dictionary">
+	<typeAlias alias="dictionaryModel" type="com.vo.TConfigDictionary"/>	
+	<resultMap class="dictionaryModel" id="dictionaryMap">
+		<result property="id" column="id"/>
+		<result property="keyword" column="keyword"/>
+		<result property="name" column="name"/>
+		<result property="deleteFlag" column="delete_flag"/>
+		<result property="note" column="note"/>
+		<result property="seq" column="seq"/>
+	</resultMap>
+
+
+	<select id="queryDic" resultMap="dictionaryMap" parameterClass="java.util.HashMap">
+		select * from t_config_dictionary
+		where delete_flag='0'
+		<isNotEmpty property="id" prepend="and">
+			id=#id#
+		</isNotEmpty>
+		<isNotEmpty property="keyword" prepend="and">
+			keyword=#keyword#
+		</isNotEmpty>
+		<isNotEmpty property="keywords" prepend="and">
+			keyword in 
+			<iterate property="keywords" open="(" close=")" conjunction=",">
+				#keywords[]#
+			</iterate>
+		</isNotEmpty>
+		order by keyword,seq
+	</select>
+	
+</sqlMap>

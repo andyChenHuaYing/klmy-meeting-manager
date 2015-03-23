@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ryJbxx">
+	<typeAlias alias="jbxxModel" type="com.vo.buz.RyJbxx"/>	
+	<resultMap class="jbxxModel" id="jbxxMap">
+		<result property="rybh"		 column="RYBH"/>    
+		<result property="zjhm"      column="ZJHM"/>    
+		<result property="zjlx"      column="ZJLX"/>    
+		<result property="sfzxm"     column="SFZXM"/>   
+		<result property="sfzxb"     column="SFZXB"/>   
+		<result property="sfzcsrq"   column="SFZCSRQ"/> 
+		<result property="sfzmz"     column="SFZMZ"/>   
+		<result property="sfzsdz"    column="SFZSDZ"/>  
+	
+	</resultMap>
+	
+	<select id="queryRyJbxx" resultMap="jbxxMap" parameterClass="java.util.HashMap">
+		select 	
+		RYBH,
+		ZJHM,
+		ZJLX,
+		SFZXM,
+		SFZXB,
+		to_char(SFZCSRQ,'yyyy-MM-dd hh24:mm:ss') SFZCSRQ,
+		SFZMZ,
+		SFZSDZ
+		from RY_JBXX
+		where 1=1
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="zjlx">
+			and zjlx = #zjlx#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and sfzxm = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxb">
+			and sfzxb = #sfzxb#
+		</isNotEmpty>
+		<isNotEmpty property="sfzmz">
+			and sfzmz = #sfzmz#
+		</isNotEmpty>
+		<isNotEmpty property="sfzsdz">
+			and sfzsdz = #sfzsdz#
+		</isNotEmpty>
+	</select>
+	
+	<select id="queryRyJbxxCnt" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+		select 	
+		count(1) cnt
+		from RY_JBXX
+		where 1=1
+		<isNotEmpty property="zjhm">
+			and zjhm = #zjhm#
+		</isNotEmpty>
+		<isNotEmpty property="zjlx">
+			and zjlx = #zjlx#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxm">
+			and sfzxm = #sfzxm#
+		</isNotEmpty>
+		<isNotEmpty property="sfzxb">
+			and sfzxb = #sfzxb#
+		</isNotEmpty>
+		<isNotEmpty property="sfzmz">
+			and sfzmz = #sfzmz#
+		</isNotEmpty>
+		<isNotEmpty property="sfzsdz">
+			and sfzsdz = #sfzsdz#
+		</isNotEmpty>
+	</select>
+</sqlMap>
