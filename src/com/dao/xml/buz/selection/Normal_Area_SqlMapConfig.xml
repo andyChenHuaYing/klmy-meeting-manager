@@ -33,6 +33,17 @@
         </isNotEmpty>
     </select>
 
+    <select id="queryAllAreasForVO" parameterClass="java.util.HashMap"
+            resultClass="com.vo.TbBaseNormalArea">
+        select id, area_name as areaName from klmy_area where 1=1
+        <isNotEmpty property="id">
+            and id = #id#
+        </isNotEmpty>
+        <isNotEmpty property="normalAreaName">
+            and area_name = #normalAreaName#
+        </isNotEmpty>
+    </select>
+
     <insert id="addArea" parameterClass="java.util.HashMap">
         insert into klmy_area t (id, area_name)
         values(seq_klmy_area.nextval, #normalAreaName#)

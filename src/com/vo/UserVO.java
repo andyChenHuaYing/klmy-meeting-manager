@@ -31,7 +31,16 @@ public class UserVO implements Serializable {
 	private String email;
 	private String departName;
 	private Map roleAreaList;
-	
+    private Long normalAreaId;
+
+    public Long getNormalAreaId() {
+        return normalAreaId;
+    }
+
+    public void setNormalAreaId(Long normalAreaId) {
+        this.normalAreaId = normalAreaId;
+    }
+
 	public Long getUserId() {
 		return userId;
 	}

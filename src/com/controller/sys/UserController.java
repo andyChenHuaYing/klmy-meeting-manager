@@ -1,26 +1,16 @@
 package com.controller.sys;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.service.AreaService;
+import com.service.buz.selection.NormalAreaService;
+import com.service.common.BufferService;
+import com.service.sys.*;
+import com.util.ConstantParam;
+import com.util.ResponseUtil;
+import com.util.SysLog;
+import com.util.UserHolder;
+import com.vo.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,23 +22,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.service.AreaService;
-import com.service.common.BufferService;
-import com.service.sys.CompanySevice;
-import com.service.sys.DepartmentService;
-import com.service.sys.RoleService;
-import com.service.sys.RolegrpService;
-import com.service.sys.UnitService;
-import com.service.sys.UserService;
-import com.util.ConstantParam;
-import com.util.ResponseUtil;
-import com.util.SysLog;
-import com.util.UserHolder;
-import com.vo.CompanyVo;
-import com.vo.TBRole;
-import com.vo.TbBaseDepartment;
-import com.vo.TbBaseRolegrp;
-import com.vo.UserVO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * 
@@ -82,8 +67,12 @@ public class UserController {
 	
 	@Autowired
 	private DepartmentService departmentService;
-	
-	@Autowired
+
+    @Autowired
+    @Qualifier("normalAreaService")
+    private NormalAreaService normalAreaService;
+
+    @Autowired
 	private AreaService areaService;
 	
 	@Autowired
@@ -734,18 +723,25 @@ public class UserController {
 	*/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(params="method=getUserInitInfo")
-	public String getUserInitInfo(HttpServletResponse response) throws SQLException{
-		ResponseUtil.formatResp(response,ResponseUtil.CONTENTTYPE_JSON, ResponseUtil.CHARENCODING_UTF8);
+    public String getUserInitInfo(Long updatedUserId, HttpServletResponse response) throws SQLException {
+        ResponseUtil.formatResp(response,ResponseUtil.CONTENTTYPE_JSON, ResponseUtil.CHARENCODING_UTF8);
 		Map map = new HashMap<String, String>();
 		map.put("recursion", true);
-		List<TbBaseDepartment> deptList = this.departmentService.queryAllDept();
-		List<Map<String,Object>> roleList = this.roleService.queryRole(null);
+        /*********************************************************
+         * 		修改：将原来用户权限中部门修改成地区。												 *
+         *********************************************************/
+//		List<TbBaseDepartment> deptList = this.departmentService.queryAllDept();
+        List<TbBaseNormalArea> normalAreaList = this.normalAreaService.queryAllAreasForVO(null);
+        List<Map<String,Object>> roleList = this.roleService.queryRole(null);
 		List<TbBaseRolegrp> rolegrpList = this.rolegrpService.queryRolegrp(null);
-		JSONObject obj = new JSONObject();
-		obj.put("deptList", deptList);
-		obj.put("roleList", roleList);
+        Long areaId = this.userService.queryUserAreaId(updatedUserId);
+        JSONObject obj = new JSONObject();
+//		obj.put("deptList", deptList);
+        obj.put("normalAreaList", normalAreaList);
+        obj.put("roleList", roleList);
 		obj.put("rolegrpList", rolegrpList);
-		ResponseUtil.printWrite(response, obj, ResponseUtil.TRANSFER_NONE);
+        obj.put("areaId", areaId);
+        ResponseUtil.printWrite(response, obj, ResponseUtil.TRANSFER_NONE);
 		return null;
 	}
 	

@@ -1,29 +1,22 @@
 package com.util;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.w3c.dom.Document;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.w3c.dom.Document;
 
 /**
  * 
@@ -142,15 +135,12 @@ public class ResponseUtil {
 		}
 	    
 	    /** 
-	     * @Title: printWrite 
-	     * @Description: 将返回内容写到PrintWriter中 
-	     * @param HttpServletResponse response
-	     * @param Object obj
-	     * @param int transferFlag 根据transferFlag判断输出的是 JSON对象、JSON数组、字符串
-	     * @return void
-	     * @throws 
-	    */
-	    public static void printWrite(HttpServletResponse response,Object obj,int transferFlag){
+	     * @Title: printWrite
+         * @Description: 将返回内容写到PrintWriter中
+         * @param response
+         * @param transferFlag 根据transferFlag判断输出的是 JSON对象、JSON数组、字符串
+         */
+        public static void printWrite(HttpServletResponse response,Object obj,int transferFlag){
 	    	ResponseUtil.formatResp(response,ResponseUtil.CONTENTTYPE_JSON, ResponseUtil.CHARENCODING_UTF8);	    	
 	    	PrintWriter pw = null;
 	    	Object rtnObj = obj;
@@ -167,7 +157,6 @@ public class ResponseUtil {
 				}
 				pw.println(rtnObj);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}finally{
 				if(null!=pw){

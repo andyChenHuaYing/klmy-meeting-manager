@@ -1,18 +1,17 @@
 package com.service.sys;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import com.dao.sys.RoleDao;
 import com.dao.sys.UserDao;
 import com.util.SysLog;
 import com.util.UserHolder;
 import com.vo.UserVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 @Service("userService")
 public class UserService {
 	@Autowired
@@ -121,7 +120,12 @@ public class UserService {
 	
 	@SuppressWarnings("rawtypes")
 	public int updateUserForMap(Map map){
-		SysLog.logRecord("TB_BASE_USER", map.get("userId")==null?null:Long.valueOf((String)map.get("userId")) , SysLog.OPERATION_TYPE_UPDATE, UserHolder.getUserContext()==null?"":UserHolder.getUserContext().getUserCode()+" 修改 TB_BASE_USER");
-		return this.userDao.queryUserNamesNumber(map) > 0 ? -1 : this.userDao.updateUser(map); 
-	}
+//		SysLog.logRecord("TB_BASE_USER", map.get("userId")==null?null:Long.valueOf((String)map.get("userId")) , SysLog.OPERATION_TYPE_UPDATE, UserHolder.getUserContext()==null?"":UserHolder.getUserContext().getUserCode()+" 修改 TB_BASE_USER");
+        SysLog.logRecordSimple(SysLog.OPERATION_TYPE_UPDATE, "修改用户信息.");
+        return this.userDao.queryUserNamesNumber(map) > 0 ? -1 : this.userDao.updateUser(map);
+    }
+
+    public Long queryUserAreaId(Long updatedUserId) throws SQLException {
+        return this.userDao.queryUserAreaId(updatedUserId);
+    }
 }

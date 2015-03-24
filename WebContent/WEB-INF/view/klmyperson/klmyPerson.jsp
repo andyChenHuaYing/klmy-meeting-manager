@@ -12,7 +12,7 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>datagird</title>
+    <title>单位信息管理</title>
 
     <script type="text/javascript" src="<%=path %>/js/util/JsUtil.js"></script>
 
@@ -22,11 +22,11 @@
         $J.include("<%=path %>/js/component/My97DatePicker/WdatePicker.js");
         $J.include("<%=path %>/js/component/My97DatePicker/skin/WdatePicker.css");
         $J.include("<%=path %>/css/common/buttonCommont.css");
+        $J.include("<%=path %>/css/common/selection.css");
     </script>
 
     <script type="text/javascript">
         var grid;
-        var copyTemp = null;
         var toolbar = [{
             text: '新增',
             iconCls: 'icon-add',
@@ -273,125 +273,14 @@
                     $.messager.alert('提示', "请选择要删除的用户");
                 }
             }
-        }, '-', {
-            text: '查询设置',
-            iconCls: 'icon-setting',
-            handler: function () {
-                var userId = grid.getSelectedRowId();
-                if (userId == null || userId == "") {
-                    $.messager.alert('提示', "请选择要设置的用户");
-                    return;
-                }
-
-                var buttons = [{
-                    iconCls: 'icon-save',
-                    text: '保存',
-                    handler: function () {
-                        if (currentTableId != null) {
-                            tabColumnMap[currentTableId] = [];
-                            var checkboxs = $("#columnUL1 li input");
-                            for (var i = 0; i < checkboxs.length; i++) {
-                                if ($(checkboxs[i]).prop("checked")) {
-                                    tabColumnMap[currentTableId].push($(checkboxs[i]).attr("id"));
-                                }
-                            }
-                        }
-
-                        $.ajax({
-                            type: "POST",
-                            url: $cntPath + "/tableConfig.spr?method=setUserTabColumnRel",
-                            data: "userId=" + userId + "&tabColumnMap=" + JSON.stringify(tabColumnMap),
-                            dataType: "html",
-                            success: function (data) {
-                                if (parseInt($.trim(data)) > 0) {
-                                    $.messager.alert('提示', "设置成功！");
-                                    $('#win').dialog("close");
-                                } else {
-                                    $.messager.alert('提示', "设置失败！");
-                                }
-                            },
-                            error: function (msg) {
-                                $.messager.alert('提示', msg.responseText);
-                            }
-                        });
-                    }
-
-                }, {
-                    text: '取消',
-                    iconCls: 'icon-cancel',
-                    handler: function () {
-                        $('#win').dialog("close");
-                    }
-                }];
-                $('#win').dialog({
-                    title: '设置用户查询显示列',
-                    width: 700,
-                    height: 550,
-                    closed: false,
-                    cache: false,
-                    href: $cntPath + '/tableConfig.spr?method=toUserTabColumnRel&userId=' + userId,
-                    modal: true,
-                    buttons: buttons
-                });
-            }
-        }, '-', {
-            text: '选为查询设置模板',
-            iconCls: 'icon-setting',
-            handler: function () {
-                var row = $("#dg").datagrid('getSelected');
-                var userId = row.ID;
-                if (userId == null || userId == "") {
-                    $.messager.alert('提示', "请选择做为查询设置模板的用户");
-                    return;
-                }
-                copyTemp = null;
-                copyTemp = {userId: userId, userName: row.USER_CODE};
-                $.messager.alert('提示', "设置成功！");
-            }
-        }, '-', {
-            text: '复制查询设置',
-            iconCls: 'icon-setting',
-            handler: function () {
-                if (copyTemp == null) {
-                    $.messager.alert('提示', "请先选择查询设置模板");
-                    return;
-                }
-                var row = $("#dg").datagrid('getSelected');
-                var userId = row.ID;
-                if (userId == copyTemp.userId) {
-                    $.messager.alert("提示", "模板用户和复制用户选择的同一个，请重新选择！");
-                    return;
-                }
-                if (userId && userId > 0) {
-                    $.messager.confirm('确认', '您确认要覆盖该用户的查询设置吗？\n选择为查询设置模板的用户是' + copyTemp.userName, function (r) {
-                        if (r) {
-                            $.ajax({
-                                type: "POST",
-                                url: $cntPath + "/tableConfig.spr?method=copyQuerySetting",
-                                data: "userId=" + userId + "&copyUserId=" + copyTemp.userId,
-                                dataType: "html",
-                                success: function (data) {
-                                    if (parseInt($.trim(data)) > 0) {
-                                        $.messager.alert('提示', "复制成功！");
-                                    } else {
-                                        $.messager.alert('提示', "复制失败！");
-                                    }
-                                },
-                                error: function (msg) {
-                                    $.messager.alert('提示', msg.responseText);
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    $.messager.alert('提示', "请选择要复制的用户");
-                }
-            }
         }];
+        /**
+         * 初始化页面
+         */
         $(function () {
             $("#cc").css("height", document.documentElement.clientHeight);
             $("#centerDiv").css("height", document.documentElement.clientHeight - 190 - 40);
-            grid = new DataGrid("userManagerGrid", "#dg");
+            grid = new DataGrid("klmyPersonManagerGrid", "#dg");
             grid.load({}, {toolbar: toolbar});
             setHeight("cc");
         });
@@ -448,32 +337,6 @@
         }
 
     </script>
-    <style type="text/css">
-        .titleTd {
-            background: url("images/sys/tablespan.jpg");
-        }
-
-        #queryConditionUL li {
-            display: inline-block;
-            width: 240px;
-            padding-right: 5px;
-        }
-
-        .queryPropTable {
-            width: 100%;
-        }
-
-        .queryPropTable .td1 {
-            width: 100px;
-            text-align: left;
-            /*background: url('images/sys/tablespan.jpg') repeat scroll 0% 0% transparent;*/
-        }
-
-        .queryPropTable .td2 {
-            width: 140px;
-            text-align: right;
-        }
-    </style>
 </head>
 <body style="margin: 0px;overflow: hidden;">
 <div id="cc" class="easyui-layout" style="width:100%;height:600px;fit:true;">
@@ -504,11 +367,6 @@
 
             </li>
         </ul>
-        <!--     	<div style="height: 30px;width: 100%"> -->
-        <!--     		<a class="sts-link-btn" onclick="query();" href="javascript:void(0);"> -->
-        <!-- 				<span class="sts-link-btn-span">查 询</span> -->
-        <!-- 			</a> -->
-        <!--     	</div> -->
     </div>
     <div data-options="region:'center',title:'查询结果'" style="background:#eee;" id="centerDiv">
         <table id="dg">

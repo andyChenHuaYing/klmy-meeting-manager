@@ -26,6 +26,7 @@
         <sqlMap resource="com/dao/xml/buz/selection/Group_SqlMapConfig.xml"/>
         <sqlMap resource="com/dao/xml/buz/selection/Level_SqlMapConfig.xml"/>
         <sqlMap resource="com/dao/xml/buz/selection/Classification_SqlMapConfig.xml"/>
+    <sqlMap resource="com/dao/xml/buz/klmy/company/KlmyCompany_SqlMapConfig.xml"/>
         <sqlMap resource="com/dao/xml/buz/mz/MzXx_SqlMapConfig.xml"/>
         <sqlMap resource="com/dao/xml/buz/js/JsXx_SqlMapConfig.xml"/>
         <sqlMap resource="com/dao/xml/buz/rs/RsXx_SqlMapConfig.xml"/>

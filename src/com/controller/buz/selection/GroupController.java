@@ -79,8 +79,6 @@ public class GroupController {
         JSONObject object = new JSONObject();
         List<Map<String, Object>> list = groupService.queryGroups(map);
         int count = groupService.queryGroupsCount(map);
-//        List<Map<String, Object>> list = gaRyJbxxService.queryGaRy(map);
-//        int count = gaRyJbxxService.queryGaRyJbxxCnt(map);
         object.put("total", count);
         object.put("rows", list);
         ResponseUtil.printWrite(response, object, ResponseUtil.TRANSFER_JSONOBJECT);

@@ -22,6 +22,7 @@
 		<result property="phone" column="phone"/>
 		<result property="email" column="email"/>
 		<result property="departName" column="depart_name"/>
+        <result property="normalAreaId" column="area_id"/>
 	</resultMap>
 	
 	<select id="queryUser" parameterClass="java.util.HashMap" resultMap="userMap">
@@ -29,7 +30,7 @@
 			user_code,user_password,expire_date,
 			create_user_id,create_date,
 			modify_user_id,modify_date,
-			remark,version,record_status,user_name,phone,email,
+        remark,version,record_status,user_name,phone,email,area_id,
 			(select name from tb_base_department o where o.depart_id = t.depart_id) depart_name 
 		from tb_base_user t
 		where 1=1
@@ -213,6 +214,9 @@
 		<isNotEmpty property="email">
 			,email=#email#
 		</isNotEmpty>
+        <isNotEmpty property="normalAreaId">
+            ,area_id=#normalAreaId#
+        </isNotEmpty>
 		<isNotEmpty property="userId">
 			where  user_id = #userId#
 		</isNotEmpty>
@@ -220,7 +224,9 @@
 	
 	<insert id="addUser" parameterClass="java.util.HashMap">
 		insert into tb_base_user(user_id,co_id,depart_id,user_code,user_password,expire_date,create_user_id,create_date,
-		remark,version,user_name,phone,email) values (seq_tb_base_user_id.nextval,#coId#,#departId#,#userCode#,#userPassword#,#expireDate#,#createUserId#,sysdate,#remark#,nvl(#version#,1),#userName#,#phone#,#email#)
+        remark,version,user_name,phone,email,area_id)
+        values (seq_tb_base_user_id.nextval,#coId#,#departId#,#userCode#,#userPassword#,#expireDate#,#createUserId#,
+        sysdate,#remark#,nvl(#version#,1),#userName#,#phone#,#email#,#normalAreaId#)
 		<selectKey keyProperty="id" resultClass="long">
 			select max(user_id) from tb_base_user
 		</selectKey>
@@ -231,6 +237,10 @@
 		<isNotEmpty property="userId" prepend="and">
 			t1.user_id != #userId#
 		</isNotEmpty>
+    </select>
+
+    <select id="queryUserAreaId" parameterClass="long" resultClass="long">
+        select area_id from tb_base_user t1 where t1.user_id = #updatedUserId#
 	</select>
 </sqlMap>
 

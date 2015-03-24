@@ -1,9 +1,10 @@
 package com.dao.sys;
 
+import com.vo.UserVO;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
-import com.vo.UserVO;
 
 public interface UserDao {
 	public List<UserVO> queryUser(Map map);
@@ -15,4 +16,6 @@ public interface UserDao {
 	public int updateUser(Map map);
 	public List<Map<String, Object>> queryUserForMapNew(Map map);
 	public Integer queryUserNamesNumber(Map map);
+
+    Long queryUserAreaId(Long updatedUserId) throws SQLException;
 }

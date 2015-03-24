@@ -65,14 +65,23 @@
                 </tr>
                 
                 <tr class="aaron_table_selected_col">
-                	<td align="right">部门：</td>
+                    <td align="right">地区：</td>
                     <td>
-                    	<select id="deptId" style="width:155px;height: 24px;">
+                        <select id="normalAreaId" style="width:155px;">
                     		
                     	</select>
                     </td>
                     <td></td>
                 </tr>
+                <%--<tr class="aaron_table_selected_col">
+                	<td align="right">部门：</td>
+                    <td>
+                    	<select id="deptId" style="width:155px;height: 24px;">
+
+                    	</select>
+                    </td>
+                    <td></td>
+                </tr>--%>
             </table>
             
         </div>
@@ -109,10 +118,10 @@
                                     </select>
                                 </td>
                                 <%--<td style="vertical-align: top;" align="left">--%>
-                            		<%--<div id="menuSelectDiv" style="min-height: 100px;width: 150px;padding: 0px;">--%>
-                                   	 	<%--<ul id="ee"></ul> --%>
-                                    <%--</div>--%>
-                            	<%--</td>--%>
+                                <%--<div id="menuSelectDiv" style="min-height: 100px;width: 150px;padding: 0px;">--%>
+                                <%--<ul id="ee"></ul> --%>
+                                <%--</div>--%>
+                                <%--</td>--%>
                             </tr>
                         </table>
                     </td>
@@ -152,10 +161,10 @@
                                     </select>
                                 </td>
                                 <%--<td style="vertical-align: top;" align="left">--%>
-                            		<%--<div id="menuSelectDiv" style="min-height: 100px;width: 150px;padding: 0px;">--%>
-                                   	 	<%--<ul id="dd"></ul> --%>
-                                    <%--</div>--%>
-                            	<%--</td>--%>
+                                <%--<div id="menuSelectDiv" style="min-height: 100px;width: 150px;padding: 0px;">--%>
+                                <%--<ul id="dd"></ul> --%>
+                                <%--</div>--%>
+                                <%--</td>--%>
                             </tr>
                         </table>
                     </td>

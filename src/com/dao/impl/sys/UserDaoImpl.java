@@ -1,17 +1,16 @@
 package com.dao.impl.sys;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
+import com.dao.base.BaseDao;
+import com.dao.sys.UserDao;
+import com.vo.UserVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.dao.base.BaseDao;
-import com.dao.sys.UserDao;
-import com.vo.UserVO;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 @Repository("userDao")
 public class UserDaoImpl extends BaseDao implements UserDao{
 
@@ -148,5 +147,10 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 		}
 		return count;
 	}
-	
+
+    @Override
+    public Long queryUserAreaId(Long updatedUserId) throws SQLException {
+        return (Long) this.sqlMapClient.queryForObject("user.queryUserAreaId", updatedUserId);
+    }
+
 }

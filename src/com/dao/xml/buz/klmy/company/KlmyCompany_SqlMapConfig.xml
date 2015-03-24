@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="klmyCompany">
+
+    <select id="queryKlmyCompany" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+        select t1.id ID, t1.company_name COMPANY_NAME, t1.area_id AREA_ID, t1.classification_id CLASSIFICATION_ID,
+        t1.address ADDRESS, t1.contact_people CONTACT_PEOPLE, t1.contact_phone CONTACT_PHONE,
+        t2.area_name AREA_NAME, t3.classification_name CLASSIFICATION_NAME
+        from klmy_company t1, klmy_area t2, klmy_classification t3
+        where t1.area_id = t2.id
+        and t1.classification_id = t3.id
+        <isNotEmpty property="areaId">
+            and t1.area_id = #areaId#
+        </isNotEmpty>
+        <isNotEmpty property="classificationId">
+            and t1.classification_id = #classificationId#
+        </isNotEmpty>
+        <isNotEmpty property="keyWord">
+            and t1.address like '%'||#keyWord#||'%'
+            or t1.company_name like '%'||#keyWord#||'%'
+            or t1.contact_people like '%'||#keyWord#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="address">
+            and t1.address like '%'||#address#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="companyName">
+            and t1.companyName like '%'|| #companyName#||'%'
+        </isNotEmpty>
+    </select>
+
+    <select id="queryKlmyCompanyCount" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+        select count(1) cnt
+        from klmy_company t1, klmy_area t2, klmy_classification t3
+        where t1.area_id = t2.id
+        and t1.classification_id = t3.id
+        <isNotEmpty property="areaId">
+            and t1.area_id = #areaId#
+        </isNotEmpty>
+        <isNotEmpty property="classificationId">
+            and t1.classification_id = #classificationId#
+        </isNotEmpty>
+        <isNotEmpty property="keyWord">
+            and t1.address like '%'||#keyWord#||'%'
+            or t1.company_name like '%'||#keyWord#||'%'
+            or t1.contact_people like '%'||#keyWord#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="address">
+            and t1.address like '%'||#address#||'%'
+        </isNotEmpty>
+        <isNotEmpty property="companyName">
+            and t1.companyName like '%'|| #companyName#||'%'
+        </isNotEmpty>
+    </select>
+
+    <insert id="addGroup" parameterClass="java.util.HashMap">
+        insert into klmy_group t (id, group_name)
+        values(seq_klmy_group.nextval, #groupName#)
+        <selectKey keyProperty="id" resultClass="long">
+            select max(id) from klmy_group
+        </selectKey>
+    </insert>
+
+    <update id="updateGroupName" parameterClass="java.util.HashMap">
+        update klmy_group set group_name = #groupName#
+        where id = #id#
+    </update>
+</sqlMap>
