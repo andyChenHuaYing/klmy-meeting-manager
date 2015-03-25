@@ -3,6 +3,11 @@
         PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="classification">
+    <typeAlias alias="classificationModel" type="com.vo.buz.selection.ClassificationVO"/>
+    <resultMap id="classificationMap" class="classificationModel">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
 
     <select id="queryClassifications" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
         select t1.id, t1.classification_name
@@ -30,6 +35,17 @@
         </isNotEmpty>
         <isNotEmpty property="classificationName">
             and classification_name = #classificationName#
+        </isNotEmpty>
+    </select>
+
+    <select id="queryAllClassificationsForVO" parameterClass="java.util.HashMap"
+            resultMap="classificationMap">
+        select id, classification_name name from klmy_classification where 1=1
+        <isNotEmpty property="id">
+            and id=#id#
+        </isNotEmpty>
+        <isNotEmpty property="name">
+            and classification_name = #name#
         </isNotEmpty>
     </select>
 

@@ -33,6 +33,17 @@
         </isNotEmpty>
     </select>
 
+    <select id="queryAllLevelsForVO" parameterClass="java.util.HashMap"
+            resultClass="com.vo.buz.selection.LevelVO">
+        select id, level_name name from klmy_level where 1=1
+        <isNotEmpty property="id">
+            and id = #id#
+        </isNotEmpty>
+        <isNotEmpty property="name">
+            and level_name = #name#
+        </isNotEmpty>
+    </select>
+
     <insert id="addLevel" parameterClass="java.util.HashMap">
         insert into klmy_level t (id, level_name)
         values(seq_klmy_level.nextval, #levelName#)

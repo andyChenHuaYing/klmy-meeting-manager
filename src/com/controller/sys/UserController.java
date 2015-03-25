@@ -8,7 +8,11 @@ import com.util.ConstantParam;
 import com.util.ResponseUtil;
 import com.util.SysLog;
 import com.util.UserHolder;
-import com.vo.*;
+import com.vo.CompanyVo;
+import com.vo.TBRole;
+import com.vo.TbBaseRolegrp;
+import com.vo.UserVO;
+import com.vo.buz.selection.TbBaseNormalArea;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -73,7 +77,7 @@ public class UserController {
     private NormalAreaService normalAreaService;
 
     @Autowired
-	private AreaService areaService;
+    private AreaService areaService;
 	
 	@Autowired
 	private RolegrpService rolegrpService;
@@ -724,25 +728,25 @@ public class UserController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(params="method=getUserInitInfo")
     public String getUserInitInfo(Long updatedUserId, HttpServletResponse response) throws SQLException {
-        ResponseUtil.formatResp(response,ResponseUtil.CONTENTTYPE_JSON, ResponseUtil.CHARENCODING_UTF8);
-		Map map = new HashMap<String, String>();
+        ResponseUtil.formatResp(response, ResponseUtil.CONTENTTYPE_JSON, ResponseUtil.CHARENCODING_UTF8);
+        Map map = new HashMap<String, String>();
 		map.put("recursion", true);
         /*********************************************************
          * 		修改：将原来用户权限中部门修改成地区。												 *
          *********************************************************/
 //		List<TbBaseDepartment> deptList = this.departmentService.queryAllDept();
         List<TbBaseNormalArea> normalAreaList = this.normalAreaService.queryAllAreasForVO(null);
-        List<Map<String,Object>> roleList = this.roleService.queryRole(null);
-		List<TbBaseRolegrp> rolegrpList = this.rolegrpService.queryRolegrp(null);
+        List<Map<String, Object>> roleList = this.roleService.queryRole(null);
+        List<TbBaseRolegrp> rolegrpList = this.rolegrpService.queryRolegrp(null);
         Long areaId = this.userService.queryUserAreaId(updatedUserId);
         JSONObject obj = new JSONObject();
 //		obj.put("deptList", deptList);
         obj.put("normalAreaList", normalAreaList);
         obj.put("roleList", roleList);
-		obj.put("rolegrpList", rolegrpList);
+        obj.put("rolegrpList", rolegrpList);
         obj.put("areaId", areaId);
         ResponseUtil.printWrite(response, obj, ResponseUtil.TRANSFER_NONE);
-		return null;
+        return null;
 	}
 	
 	/** 

@@ -16,6 +16,8 @@ $(function () {
  *              分类  initClassificationSelection
  *              分组  initGroupSelection
  *              民族  initNationSelection
+ *              级别  initLevelSelection
+ *              单位  initKlmyCompanySelection
  *
  * @param selectNodeId
  *              下拉选择框节点ID。
@@ -50,12 +52,12 @@ function withoutDefaultSelection(type, selectNodeId) {
         async: false,
         success: function (data) {
             if (data) {
-                var selectionDataList = data.selectionDataList;
+                var selectionDataList = data.list;
                 if (selectionDataList) {
                     var html = "<option value=''>--请选择--</option>";
                     for (var i = 0; i < selectionDataList.length; i++) {
                         var id = selectionDataList[i].id;
-                        html += "<option value='" + id + "'>" + selectionDataList[i].selectionName + "</option>";
+                        html += "<option value='" + id + "'>" + selectionDataList[i].name + "</option>";
                     }
                     $("#" + selectNodeId + "").append(html);
                 }
@@ -88,6 +90,42 @@ function selectedByKlmyCompanyId(type, selectNodeId, klmyCompanyId) {
 }
 
 /**
+ * 新增单位信息时、填充地区下拉框、并且根据地区管理员所在地区自动选中对应地区。
+ * @param type
+ * @param selectNodeId
+ * @param userId
+ */
+function selectedAreaByUserId(type, selectNodeId, userId) {
+    $.ajax({
+        url: contextPath + "/selection.spr?method=" + type,
+        data: "userId=" + userId,
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            if (data) {
+                var selectionDataList = data.list;
+                var selectedAreaId = data.userAreaId;
+                if (selectionDataList) {
+                    var html = "<option value=''>--请选择--</option>";
+                    for (var i = 0; i < selectionDataList.length; i++) {
+                        var id = selectionDataList[i].id;
+                        if (selectedAreaId == id) {
+                            html += "<option selected=selected value='" + id + "'>" + selectionDataList[i].name + "</option>";
+                        } else {
+                            html += "<option value='" + id + "'>" + selectionDataList[i].name + "</option>";
+                        }
+                    }
+                    $("#" + selectNodeId + "").append(html);
+                }
+            }
+        },
+        error: function (msg) {
+            $.messager.alert("error:" + msg);
+        }
+    });
+}
+
+/**
  * 修改人员信息时、用于回填人员信息相关下拉框、并且将当前人员属性设置为默认选中状态。
  * @param type
  * @param selectNodeId
@@ -96,3 +134,4 @@ function selectedByKlmyCompanyId(type, selectNodeId, klmyCompanyId) {
 function selectedByKlmyPersonId(type, selectNodeId, klmyPersonId) {
     init(type, selectNodeId, null, klmyPersonId, null);
 }
+

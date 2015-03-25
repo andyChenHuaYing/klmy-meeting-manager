@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -50,9 +50,9 @@
 				}
 			});
 			function query(){
-				var inputs = $("#queryConditionUL input");
+                var inputs = $("#queryConditionUL").find("input");
 				var queryCondition = {};
-				var selects = $("#queryConditionUL select");
+                var selects = $("#queryConditionUL").find("select");
 				for(var i=0;i<inputs.length;i++){
 					if($(inputs[i]).attr("type")=="text"){
 						queryCondition[$(inputs[i]).attr("id")] = $.trim($(inputs[i]).val());
@@ -88,10 +88,10 @@
 		}
 		</style>
 	</head>
- <body style="margin: 0px;overflow: hidden;">
+    <body style="margin: 0;overflow: hidden;">
  <div id="cc" class="easyui-layout" style="width:100%;height:600px;fit:true;">   
     <div data-options="region:'north',title:'查询条件',split:true" style="height:160px;">
-    	 <ul style="margin-left: 0px;padding-left: 10px;" id="queryConditionUL">
+        <ul style="margin-left: 0;padding-left: 10px;" id="queryConditionUL">
     	 	<li>
     	 		<table class="queryPropTable">
     	 			<tr>

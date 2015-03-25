@@ -134,14 +134,14 @@ public class ResponseUtil {
 			return str;
 		}
 	    
-	    /** 
-	     * @Title: printWrite
+	    /**
+         * @Title: printWrite
          * @Description: 将返回内容写到PrintWriter中
          * @param response
          * @param transferFlag 根据transferFlag判断输出的是 JSON对象、JSON数组、字符串
          */
-        public static void printWrite(HttpServletResponse response,Object obj,int transferFlag){
-	    	ResponseUtil.formatResp(response,ResponseUtil.CONTENTTYPE_JSON, ResponseUtil.CHARENCODING_UTF8);	    	
+        public static void printWrite(HttpServletResponse response, Object obj, int transferFlag) {
+            ResponseUtil.formatResp(response,ResponseUtil.CONTENTTYPE_JSON, ResponseUtil.CHARENCODING_UTF8);
 	    	PrintWriter pw = null;
 	    	Object rtnObj = obj;
 	    	try {

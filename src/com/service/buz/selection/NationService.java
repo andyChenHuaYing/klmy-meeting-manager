@@ -3,6 +3,7 @@ package com.service.buz.selection;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.util.SysLog;
 import com.util.UserHolder;
+import com.vo.buz.selection.NationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,5 +75,9 @@ public class NationService {
 
         SysLog.logRecordSimple(SysLog.OPERATION_TYPE_DELETE, UserHolder.getUserCode() + " 删除民族分类");
         return this.sqlMapClient.delete("nation.deleteNation", map);
+    }
+
+    public List<NationVO> queryAllKlmyNationForVO(Map<String, Object> map) throws SQLException {
+        return this.sqlMapClient.queryForList("nation.queryAllKlmyNationForVO", map);
     }
 }

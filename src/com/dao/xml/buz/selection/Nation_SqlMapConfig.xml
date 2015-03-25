@@ -33,6 +33,17 @@
         </isNotEmpty>
     </select>
 
+    <select id="queryAllKlmyNationForVO" parameterClass="java.util.HashMap"
+            resultClass="com.vo.buz.selection.NationVO">
+        select id, nation_name name from klmy_nation where 1=1
+        <isNotEmpty property="id">
+            and id = #id#
+        </isNotEmpty>
+        <isNotEmpty property="name">
+            and nation_name = #name#
+        </isNotEmpty>
+    </select>
+
     <insert id="addNation" parameterClass="java.util.HashMap">
         insert into klmy_nation t (id, nation_name)
         values(seq_klmy_nation.nextval, #nationName#)

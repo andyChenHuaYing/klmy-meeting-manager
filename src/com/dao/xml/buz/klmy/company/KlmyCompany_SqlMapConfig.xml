@@ -11,16 +11,21 @@
         from klmy_company t1, klmy_area t2, klmy_classification t3
         where t1.area_id = t2.id
         and t1.classification_id = t3.id
-        <isNotEmpty property="areaId">
-            and t1.area_id = #areaId#
+        <isNotEmpty property="normalAreaId">
+            and t1.area_id = #normalAreaId#
         </isNotEmpty>
         <isNotEmpty property="classificationId">
             and t1.classification_id = #classificationId#
         </isNotEmpty>
+        <isNotEmpty property="klmyCompanyName">
+            and t1.company_name = #klmyCompanyName#
+        </isNotEmpty>
         <isNotEmpty property="keyWord">
-            and t1.address like '%'||#keyWord#||'%'
+            and(
+            t1.address like '%'||#keyWord#||'%'
             or t1.company_name like '%'||#keyWord#||'%'
             or t1.contact_people like '%'||#keyWord#||'%'
+            )
         </isNotEmpty>
         <isNotEmpty property="address">
             and t1.address like '%'||#address#||'%'
@@ -35,16 +40,21 @@
         from klmy_company t1, klmy_area t2, klmy_classification t3
         where t1.area_id = t2.id
         and t1.classification_id = t3.id
-        <isNotEmpty property="areaId">
-            and t1.area_id = #areaId#
+        <isNotEmpty property="normalAreaId">
+            and t1.area_id = #normalAreaId#
         </isNotEmpty>
         <isNotEmpty property="classificationId">
             and t1.classification_id = #classificationId#
         </isNotEmpty>
+        <isNotEmpty property="klmyCompanyName">
+            and t1.company_name = #klmyCompanyName#
+        </isNotEmpty>
         <isNotEmpty property="keyWord">
-            and t1.address like '%'||#keyWord#||'%'
+            and(
+            t1.address like '%'||#keyWord#||'%'
             or t1.company_name like '%'||#keyWord#||'%'
             or t1.contact_people like '%'||#keyWord#||'%'
+            )
         </isNotEmpty>
         <isNotEmpty property="address">
             and t1.address like '%'||#address#||'%'
@@ -54,16 +64,25 @@
         </isNotEmpty>
     </select>
 
-    <insert id="addGroup" parameterClass="java.util.HashMap">
-        insert into klmy_group t (id, group_name)
-        values(seq_klmy_group.nextval, #groupName#)
+    <select id="queryAllKlmyCompanyForVO" resultClass="com.vo.buz.selection.KlmyCompanyVo"
+            parameterClass="java.util.HashMap">
+        select t1.id id, t1.area_id areaId, t1.classification_id classificationId, t1.company_name name, t1.address
+        address, t1.contact_people contactPeople, t1.contact_phone contactPhone
+        from klmy_company t1 where 1=1
+        <isNotEmpty property="id">
+            and id = #id#
+        </isNotEmpty>
+        <isNotEmpty property="name">
+            and company_name = #name#
+        </isNotEmpty>
+    </select>
+
+    <insert id="saveKlmyCompanyInfo" parameterClass="java.util.HashMap">
+        insert into klmy_company (id, ADDRESS, CONTACT_PEOPLE, CONTACT_PHONE, COMPANY_NAME, AREA_ID, CLASSIFICATION_ID)
+        values (seq_klmy_company.nextval, #klmyCompanyAddress# ,#klmyCompanyContactPeople#,#klmyCompanyContactPhone#
+        ,#klmyCompanyName#,#addNormalAreaId#,#addClassificationId#)
         <selectKey keyProperty="id" resultClass="long">
-            select max(id) from klmy_group
+            select max(id) from klmy_company
         </selectKey>
     </insert>
-
-    <update id="updateGroupName" parameterClass="java.util.HashMap">
-        update klmy_group set group_name = #groupName#
-        where id = #id#
-    </update>
 </sqlMap>

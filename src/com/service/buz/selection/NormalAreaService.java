@@ -3,7 +3,7 @@ package com.service.buz.selection;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.util.SysLog;
 import com.util.UserHolder;
-import com.vo.TbBaseNormalArea;
+import com.vo.buz.selection.TbBaseNormalArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,8 +78,6 @@ public class NormalAreaService {
     }
 
     public List<TbBaseNormalArea> queryAllAreasForVO(Map<String, Object> map) throws SQLException {
-        SysLog.logRecordSimple(SysLog.OPERATION_TYPE_QUERY, UserHolder.getUserContext() == null ? ""
-                : UserHolder.getUserContext().getUserCode() + " 地区查询");
         return this.sqlMapClient.queryForList("normalArea.queryAllAreasForVO", map);
     }
 }

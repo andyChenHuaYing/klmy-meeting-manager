@@ -34,7 +34,7 @@
     </select>
 
     <select id="queryAllAreasForVO" parameterClass="java.util.HashMap"
-            resultClass="com.vo.TbBaseNormalArea">
+            resultClass="com.vo.buz.selection.TbBaseNormalArea">
         select id, area_name as areaName from klmy_area where 1=1
         <isNotEmpty property="id">
             and id = #id#

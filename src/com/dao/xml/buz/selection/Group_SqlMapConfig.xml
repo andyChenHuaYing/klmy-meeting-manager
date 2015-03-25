@@ -33,6 +33,17 @@
         </isNotEmpty>
     </select>
 
+    <select id="queryAllGroupsForVO" parameterClass="java.util.HashMap"
+            resultClass="com.vo.buz.selection.GroupVO">
+        select id, group_name as name from klmy_group where 1=1
+        <isNotEmpty property="id">
+            and id = #id#
+        </isNotEmpty>
+        <isNotEmpty property="name">
+            and group_name = #name#
+        </isNotEmpty>
+    </select>
+
     <insert id="addGroup" parameterClass="java.util.HashMap">
         insert into klmy_group t (id, group_name)
         values(seq_klmy_group.nextval, #groupName#)

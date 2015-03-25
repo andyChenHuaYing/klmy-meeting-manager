@@ -12,7 +12,7 @@
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>单位信息管理</title>
+    <title>用户信息管理</title>
 
     <script type="text/javascript" src="<%=path %>/js/util/JsUtil.js"></script>
 
@@ -284,15 +284,22 @@
             grid.load({}, {toolbar: toolbar});
             setHeight("cc");
         });
+
+        /**
+         * 查询操作
+         */
         function query() {
-            var inputs = $("#queryConditionUL input");
+            var inputs = $("#queryConditionUL").find("input");
+            var selects = $("#queryConditionUL").find("select");
             var queryCondition = {};
             for (var i = 0; i < inputs.length; i++) {
                 if ($(inputs[i]).attr("type") == "text") {
                     queryCondition[$(inputs[i]).attr("id")] = $.trim($(inputs[i]).val());
                 }
             }
-
+            for (var j = 0; j < selects.length; j++) {
+                queryCondition[$(selects[j]).attr("id")] = $.trim($(selects[j]).val());
+            }
             grid.load({queryCondition: JSON.stringify(queryCondition)}, {toolbar: toolbar});
         }
 
@@ -338,22 +345,139 @@
 
     </script>
 </head>
-<body style="margin: 0px;overflow: hidden;">
+<body style="margin: 0;overflow: hidden;">
 <div id="cc" class="easyui-layout" style="width:100%;height:600px;fit:true;">
-    <div data-options="region:'north',title:'查询条件',split:true" style="height:90px;">
-        <ul style="margin-left: 0px;padding-left: 10px;" id="queryConditionUL">
+    <div data-options="region:'north',title:'查询条件',split:true" style="height:160px;">
+        <ul style="margin-left: 0;padding-left: 10px;" id="queryConditionUL">
             <li>
                 <table class="queryPropTable">
                     <tr>
                         <td class="td1">
-                            用户姓名：
+                            姓名：
                         </td>
                         <td class="td2">
-                            <input type="text" id="asUserCode">
+                            <input type="text" id="personName">
                         </td>
                     </tr>
                 </table>
             </li>
+            <li>
+                <table class="queryPropTable">
+                    <tr>
+                        <td class="td1">
+                            性别：
+                        </td>
+                        <td class="td2">
+                            <select id="sex" style="width:155px;">
+                                <option value=''>--请选择--</option>
+                                <option value='男'>男</option>
+                                <option value='女'>女</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <table class="queryPropTable">
+                    <tr>
+                        <td class="td1">
+                            民族名称：
+                        </td>
+                        <td class="td2">
+                            <select id="nationId" style="width:155px;">
+
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+
+            <li>
+                <table class="queryPropTable">
+                    <tr>
+                        <td class="td1">
+                            地区名称：
+                        </td>
+                        <td class="td2">
+                            <select id="normalAreaId" style="width:155px;">
+
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <table class="queryPropTable">
+                    <tr>
+                        <td class="td1">
+                            单位名称：
+                        </td>
+                        <td class="td2">
+                            <select id="companyId" style="width:155px;">
+
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+
+            <li>
+                <table class="queryPropTable">
+                    <tr>
+                        <td class="td1">
+                            级别名称：
+                        </td>
+                        <td class="td2">
+                            <select id="levelId" style="width:155px;">
+
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <table class="queryPropTable">
+                    <tr>
+                        <td class="td1">
+                            分组名称：
+                        </td>
+                        <td class="td2">
+                            <select id="groupId" style="width:155px;">
+
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <table class="queryPropTable">
+                    <tr>
+                        <td class="td1">
+                            是否参会：
+                        </td>
+                        <td class="td2">
+                            <select id="isMeeting" style="width:155px;">
+                                <option value=''>--请选择--</option>
+                                <option value='是'>是</option>
+                                <option value='否'>否</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <table class="queryPropTable">
+                    <tr>
+                        <td class="td1">
+                            关键字：
+                        </td>
+                        <td class="td2">
+                            <input type="text" title="姓名电话" id="keyWord">
+                        </td>
+                    </tr>
+                </table>
+            </li>
+
             <li>
                 <table class="queryPropTable">
                     <tr>
@@ -364,7 +488,6 @@
                         </td>
                     </tr>
                 </table>
-
             </li>
         </ul>
     </div>
@@ -376,4 +499,15 @@
 
 <div id="win"></div>
 </body>
+<script>
+    var contextPath = "<%=path%>";
+</script>
+<script src="<%=path%>/js/common/selectionInit.js"></script>
+<script>
+    withoutDefaultSelection("initAreaSelection", "normalAreaId");
+    withoutDefaultSelection("initNationSelection", "nationId");
+    withoutDefaultSelection("initGroupSelection", "groupId");
+    withoutDefaultSelection("initLevelSelection", "levelId");
+    withoutDefaultSelection("initKlmyCompanySelection", "companyId");
+</script>
 </html>

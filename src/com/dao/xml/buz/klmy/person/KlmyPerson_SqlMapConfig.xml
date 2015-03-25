@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="klmyPerson">
+
+    <select id="queryKlmyPerson" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+        select t1.id id, t1.person_name PERSON_NAME, t1.sex SEX, t2.nation_name NATION_NAME,
+        t3.area_name AREA_NAME, t4.company_name COMPANY_NAME,
+        t1.phone PHONE, t6.group_name GROUP_NAME, t1.is_meeting IS_MEETING, t7.level_name LEVEL_NAME
+        from klmy_person t1, klmy_nation t2, klmy_area t3, klmy_company t4, klmy_group t6, klmy_level t7
+        where t1.nation_id = t2.id
+        and t1.area_id = t3.id
+        and t1.company_id = t4.id
+        and t1.group_id = t6.id
+        and t1.level_id = t7.id
+        <isNotEmpty property="personName">
+            and t1.person_name = #personName#
+        </isNotEmpty>
+        <isNotEmpty property="sex">
+            and t1.sex = #sex#
+        </isNotEmpty>
+        <isNotEmpty property="nationId">
+            and t1.nation_id = #nationId#
+        </isNotEmpty>
+        <isNotEmpty property="normalAreaId">
+            and t1.area_id = #normalAreaId#
+        </isNotEmpty>
+        <isNotEmpty property="companyId">
+            and t1.company_id = #companyId#
+        </isNotEmpty>
+        <isNotEmpty property="levelId">
+            and t1.level_id = #levelId#
+        </isNotEmpty>
+        <isNotEmpty property="groupId">
+            and t1.group_id = #groupId#
+        </isNotEmpty>
+        <isNotEmpty property="isMeeting">
+            and t1.is_meeting = #isMeeting#
+        </isNotEmpty>
+        <isNotEmpty property="keyWord">
+            and(
+            t1.person_name like '%'||#keyWord#||'%'
+            or t1.phone like '%'||#keyWord#||'%'
+            )
+        </isNotEmpty>
+    </select>
+
+    <select id="queryKlmyPersonCount" resultClass="java.lang.Integer" parameterClass="java.util.HashMap">
+        select count(1) cnt
+        from klmy_person t1, klmy_nation t2, klmy_area t3, klmy_company t4, klmy_group t6, klmy_level t7
+        where t1.nation_id = t2.id
+        and t1.area_id = t3.id
+        and t1.company_id = t4.id
+        and t1.group_id = t6.id
+        and t1.level_id = t7.id
+
+        <isNotEmpty property="sex">
+            and t1.sex = #sex#
+        </isNotEmpty>
+        <isNotEmpty property="nationId">
+            and t1.nation_id = #nationId#
+        </isNotEmpty>
+        <isNotEmpty property="normalAreaId">
+            and t1.area_id = #normalAreaId#
+        </isNotEmpty>
+        <isNotEmpty property="companyId">
+            and t1.company_id = #companyId#
+        </isNotEmpty>
+        <isNotEmpty property="levelId">
+            and t1.level_id = #levelId#
+        </isNotEmpty>
+        <isNotEmpty property="groupId">
+            and t1.group_id = #groupId#
+        </isNotEmpty>
+        <isNotEmpty property="isMeeting">
+            and t1.is_meeting = #isMeeting#
+        </isNotEmpty>
+        <isNotEmpty property="keyWord">
+            and(
+            t1.person_name like '%'||#keyWord#||'%'
+            or t1.phone like '%'||#keyWord#||'%'
+            )
+        </isNotEmpty>
+    </select>
+</sqlMap>

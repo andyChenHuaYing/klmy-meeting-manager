@@ -3,6 +3,7 @@ package com.service.buz.selection;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.util.SysLog;
 import com.util.UserHolder;
+import com.vo.buz.selection.LevelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +73,9 @@ public class LevelService {
 
         SysLog.logRecordSimple(SysLog.OPERATION_TYPE_DELETE, UserHolder.getUserCode() + " 删除级别");
         return this.sqlMapClient.delete("level.deleteLevel", map);
+    }
+
+    public List<LevelVO> queryAllLevelsForVO(Map<String, Object> map) throws SQLException {
+        return this.sqlMapClient.queryForList("level.queryAllLevelsForVO", map);
     }
 }
